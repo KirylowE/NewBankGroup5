@@ -23,7 +23,7 @@ hs_err_pid*
 
 # IDEA project files
 .idea
-.iml
+*.iml
 
 #out
 /out
