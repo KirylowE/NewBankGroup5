@@ -22,7 +22,7 @@ public class NewBank {
 		customers.put("Christina", christina);
 		
 		Customer anna = new Customer();
-		anna.addAccount(new Account("Checking", 250.0));
+		anna.addAccount(new Account("Checking", 1250.0));
 		customers.put("Anna", anna);
 	}
 	
