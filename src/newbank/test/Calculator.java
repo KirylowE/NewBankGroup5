@@ -6,4 +6,8 @@ public class Calculator {
     return arg1 + arg2;
   }
 
+  public static Integer divider (int arg1, int arg2) {
+    return null;
+  }
+
 }
