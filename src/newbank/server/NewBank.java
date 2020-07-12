@@ -21,9 +21,9 @@ public class NewBank {
 		christina.addAccount(new Account("Savings", 1500.0));
 		customers.put("Christina", christina);
 		
-		Customer john = new Customer();
-		john.addAccount(new Account("Checking", 250.0));
-		customers.put("John", john);
+		Customer anna = new Customer();
+		anna.addAccount(new Account("Checking", 1250.0));
+		customers.put("Anna", anna);
 	}
 	
 	public static NewBank getBank() {
