@@ -17,8 +17,8 @@ public class Calculator {
     if (arg2 != 0) {
       return arg1 / arg2;
     }
-    System.out.println("Cannot divide by zero.");
-    return null;
+    System.out.println("Cannot divide by 0");
+    return 0;
   }
 
 }
