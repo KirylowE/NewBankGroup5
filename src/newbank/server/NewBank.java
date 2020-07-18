@@ -32,6 +32,11 @@ public class NewBank {
 		Customer isabel = new Customer();
 		isabel.addAccount(new Account(" Balance", 750.0));
 		customers.put("Isabel", isabel);
+
+		Customer anna = new Customer();
+		anna.addAccount(new Account("Checking", 1250.0));
+		customers.put("Anna", anna);
+
 	}
 	
 	public static NewBank getBank() {
