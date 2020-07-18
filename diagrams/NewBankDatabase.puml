@@ -1,0 +1,45 @@
+@startuml
+
+' remove the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+' font
+skinparam defaultFontName Arial
+
+' define styles
+!define desc(x) <color:gray>  (x)</color>
+!define unique <i><color:#973A4A>unique</color></i>
+!define FK(x) <color:#424897><<FK>></color>  x<color:#000>Id</color> : INTEGER
+!define PK <color:#973A4A><<PK>></color>  Id : INTEGER desc(generated)
+
+title New Bank Design
+
+header Entity Relationship Diagram
+footer New Bank Group 5
+
+entity "Customer" {
+ PK
+ --
+ *FirstName : VARCHAR
+ *LastName : VARCHAR
+ *FK(Author) : desc(CreatedBy)
+ *CreatedOn: DATETIME
+ *FK(Location)
+}
+
+entity "Location" {
+ PK
+ --
+ *LocationName : VARCHAR
+}
+
+
+' relationships
+Customer }o-- Location
+
+
+
+
+
+@enduml
