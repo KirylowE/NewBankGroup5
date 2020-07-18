@@ -23,7 +23,7 @@ public class NewBank {
 		Customer christina = new Customer();
 		christina.addAccount(new Account("Savings", 1500.0));
 		customers.put("Christina", christina);
-		
+	
 		Customer john = new Customer();
 		john.addAccount(new Account("Checking1", 250.0));
 		john.addAccount(new Account("Checking2", 350.0));
@@ -36,7 +36,6 @@ public class NewBank {
 		Customer anna = new Customer();
 		anna.addAccount(new Account("Checking", 1250.0));
 		customers.put("Anna", anna);
-
 	}
 	
 	public static NewBank getBank() {

@@ -34,9 +34,11 @@ public class NewBankClientHandler extends Thread{
 			// if the user is authenticated then get requests from the user and process them 
 			if(customer != null) {
 				out.println("Log In Successful. What do you want to do?");
+				//mainMenu();
 				while(true) {
+					mainMenu();
 					String request = in.readLine();
-					System.out.println("Request from " + customer.getKey());
+					out.println("Request from " + customer.getKey());
 					String responce = bank.processRequest(customer, request);
 					out.println(responce);
 				}
@@ -56,6 +58,16 @@ public class NewBankClientHandler extends Thread{
 				Thread.currentThread().interrupt();
 			}
 		}
+	}
+
+	public void mainMenu(){
+		out.println("       New Bank Menu");
+		out.println("1.SHOWMYACCOUNTS");
+		out.println("2.NEWACCOUNT <Name>");
+		out.println("3.MOVE <Amount> <From> <To>");
+		out.println("4.PAY <Person/Company> <Amount>");
+		out.println("5.EXIT");
+
 	}
 
 }
