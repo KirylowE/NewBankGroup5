@@ -11,7 +11,7 @@
        !define desc(x) <color:gray>(x)</color>
        !define unique <i><color:#973A4A>unique</color></i>
        !define FK(x) <color:#424897><<FK>></color>  x<color:#000></color>
-       !define PK <color:#973A4A><<PK>></color>  Id : INTEGER desc(generated)
+       !define PK(x) <color:#973A4A><<PK>></color> x : INTEGER desc(generated)
 
        title New Bank Design
 
@@ -19,33 +19,36 @@
        footer New Bank Group 5
 
        entity "Customer" {
-        PK (CustomerID)
+        PK(CustomerID)
         --
         *FirstName : VARCHAR
         *LastName : VARCHAR
         *DOB : DATETIME
-        *CreatedOn: DATETIME
+        *CreatedOn : DATETIME
        }
 
        entity "AccountTypes" {
-        PK (AccountTypeID)
+        PK(AccountTypeID)
         --
         *FK(AccountType) : VARCHAR
         *InterestRate : INTEGER
        }
 
        entity "Ledger" {
-        PK (TransactionID)
+        PK(TransactionID)
         --
-        *FK(FromAccountID) : INTEGER
-        *FK(ToAccountID) : INTEGER
+        *FK(FromAccountID) : INTEGER (CustomerID)
+        *FK(ToAccountID) : INTEGER (CustomerID)
+        *Amount : DOUBLE
+        *CommittedOn : DATETIME
        }
 
        entity "Accounts" {
-        PK (AccountID)
+        PK(AccountID)
         --
         *FK(CustomerID) : INTEGER
         *FK(AccountTypeID) : INTEGER
+        *Balance : DOUBLE
        }
 
 
