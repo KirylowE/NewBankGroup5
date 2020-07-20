@@ -27,12 +27,7 @@
         *CreatedOn : DATETIME
        }
 
-       entity "AccountTypes" {
-        PK(AccountTypeID)
-        --
-        *FK(AccountType) : VARCHAR
-        *InterestRate : INTEGER
-       }
+
 
        entity "Ledger" {
         PK(TransactionID)
@@ -43,8 +38,15 @@
         *CommittedOn : DATETIME
        }
 
+       entity "AccountTypes" {
+        PK(AccountTypeID)
+        --
+        *FK(AccountType) : VARCHAR
+        *InterestRate : INTEGER
+       }
+
        entity "Accounts" {
-        PK(AccountID)
+        PK(AccountNumber)
         --
         *FK(CustomerID) : INTEGER
         *FK(AccountTypeID) : INTEGER
