@@ -9,14 +9,14 @@
 
        ' define styles
        !define desc(x) <color:gray>(x)</color>
-       !define unique <i><color:#973A4A>unique</color></i>
+       !define refers(x) <i><color:green>x</color></i>
        !define FK(x) <color:#424897><<FK>></color>  x<color:#000></color>
        !define PK(x) <color:#973A4A><<PK>></color> x : INTEGER desc(generated)
 
-       title New Bank Design
+       title Database ERD
 
-       header Entity Relationship Diagram
-       footer New Bank Group 5
+       header New Bank
+       footer Group 5
 
        entity "Customer" {
         PK(CustomerID)
@@ -37,8 +37,8 @@
        entity "Ledger" {
         PK(TransactionID)
         --
-        *FK(FromAccountID) : INTEGER (CustomerID)
-        *FK(ToAccountID) : INTEGER (CustomerID)
+        *FK(FromAccountID) : INTEGER refers(CustomerID)
+        *FK(ToAccountID) : INTEGER refers(CustomerID)
         *Amount : DOUBLE
         *CommittedOn : DATETIME
        }
