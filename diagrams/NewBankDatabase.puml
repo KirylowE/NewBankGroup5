@@ -23,6 +23,7 @@
         --
         *FirstName : VARCHAR
         *LastName : VARCHAR
+        *DOB : DATETIME
         *CreatedOn: DATETIME
        }
 
@@ -43,14 +44,14 @@
        entity "Accounts" {
         PK (AccountID)
         --
-        *FK(CustomerID)
-        *FK(AccountType)
+        *FK(CustomerID) : INTEGER
+        *FK(AccountTypeID) : INTEGER
        }
 
 
        ' relationships
        Customer ||--|{ Accounts
-       AccountTypes }|--|{ Accounts
+       AccountTypes ||--|{ Accounts
        Ledger }|--|{ Accounts
 
        @enduml
