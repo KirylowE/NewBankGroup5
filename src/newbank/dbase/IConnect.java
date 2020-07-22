@@ -13,4 +13,8 @@ public interface IConnect {
 
   Map<String, Object> getEntryById(String tableName, Integer primaryKey);
 
+  void createEntry(String tableName);
+
+  void updateEntry(String tableName, Integer primaryKey);
+
 }

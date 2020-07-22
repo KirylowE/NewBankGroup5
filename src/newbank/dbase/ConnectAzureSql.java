@@ -90,5 +90,25 @@ public class ConnectAzureSql implements IConnect {
     return null;
   }
 
+  public void createEntry(String tableName) {
+    try {
+      String sqlQuery = "INSERT INTO " + tableName + "(FirstName, LastName) VALUES ('Mark', 'Fieldman');";
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate(sqlQuery);
+    } catch (SQLException e) {
+      Logger.getLogger(this.className).log(Level.SEVERE, "Unable to create entry.", e);
+    }
+  }
+
+  public void updateEntry(String tableName, Integer primaryKey) {
+    try {
+      String sqlQuery = "UPDATE " + tableName + " SET FirstName='Sabina' WHERE Id=" + primaryKey + ";";
+      Statement statement = dbConnection.createStatement();
+      statement.executeUpdate(sqlQuery);
+    } catch (SQLException e) {
+      Logger.getLogger(this.className).log(Level.SEVERE, "Unable to update entry.", e);
+    }
+  }
+
 
 }

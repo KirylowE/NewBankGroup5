@@ -21,7 +21,10 @@ public class Dispatcher {
     Map<String, Object> result = dbase.getEntryById("Customer", 2);
     System.out.println(result);
     System.out.println("-----------");
-
-
+    dbase.updateEntry("Customer", 2);
+    Map<String, Object> updatedResult = dbase.getEntryById("Customer", 2);
+    System.out.println(updatedResult);
+    System.out.println("-----------");
+    dbase.createEntry("Customer");
   }
 }
