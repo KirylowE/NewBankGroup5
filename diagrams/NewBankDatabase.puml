@@ -19,7 +19,7 @@
        footer Group 5
 
        entity "Customer" {
-        PK(CustomerID)
+        PK(Id)
         --
         *FirstName : VARCHAR
         *LastName : VARCHAR
@@ -30,23 +30,23 @@
 
 
        entity "Ledger" {
-        PK(TransactionID)
+        PK(Id)
         --
-        *FK(FromAccountID) : INTEGER refers(CustomerID)
-        *FK(ToAccountID) : INTEGER refers(CustomerID)
+        *FK(FromAccountID) : INTEGER refers(Customer.Id)
+        *FK(ToAccountID) : INTEGER refers(Customer.Id)
         *Amount : DOUBLE
         *CommittedOn : DATETIME
        }
 
        entity "AccountTypes" {
-        PK(AccountTypeID)
+        PK(Id)
         --
         *FK(AccountType) : VARCHAR
         *InterestRate : INTEGER
        }
 
        entity "Accounts" {
-        PK(AccountNumber)
+        PK(Id)
         --
         *FK(CustomerID) : INTEGER
         *FK(AccountTypeID) : INTEGER
