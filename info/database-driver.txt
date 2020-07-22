@@ -1,0 +1,8 @@
+Installing JDBC Driver for the database connectivity.
+-----------------------------------------------------
+
+Microsoft JDBC Driver for SQL Server needs to be installed in order to connect.
+
+https://docs.microsoft.com/en-us/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15
+
+Please refer to the install.txt file in the zip archive
