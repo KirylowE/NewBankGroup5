@@ -15,6 +15,10 @@ public interface IConnect {
 
   void createEntry(String tableName);
 
+  void createEntry(SqlQuery sqlQuery);
+
   void updateEntry(String tableName, Integer primaryKey);
+
+  void updateEntry(SqlQuery sqlQuery);
 
 }

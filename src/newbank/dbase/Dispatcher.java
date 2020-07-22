@@ -22,9 +22,12 @@ public class Dispatcher {
     System.out.println(result);
     System.out.println("-----------");
     dbase.updateEntry("Customer", 2);
+    dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE Id=2;"));
     Map<String, Object> updatedResult = dbase.getEntryById("Customer", 2);
     System.out.println(updatedResult);
     System.out.println("-----------");
     dbase.createEntry("Customer");
+    dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
+
   }
 }
