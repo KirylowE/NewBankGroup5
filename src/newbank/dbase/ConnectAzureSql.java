@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectAzureSql implements IConnect {
 
   private Connection dbConnection;
   private final String dbUsername;
   private final String dbPassword;
+  private final String className = IConnect.class.getName();
   private static IConnect SingleInstance;
 
   // private constructor prevents from instantiating this class
@@ -35,7 +38,7 @@ public class ConnectAzureSql implements IConnect {
       String connectionString = host + cred + args;
       dbConnection = DriverManager.getConnection(connectionString);
     } catch (SQLException e) {
-      e.printStackTrace();
+      Logger.getLogger(this.className).log(Level.SEVERE, "Database connection error.");
     }
   }
 
@@ -49,10 +52,6 @@ public class ConnectAzureSql implements IConnect {
   }
 
   public List<Map<String, Object>> getEntries(String tableName) {
-    if (tableName == null) {
-      System.out.println("Unable to get entries. The database table name must be provided.");
-      return null;
-    }
     try {
       String sqlQuery = "SELECT * FROM " + tableName + ";";
       Statement statement = dbConnection.createStatement();
@@ -68,7 +67,25 @@ public class ConnectAzureSql implements IConnect {
       }
       return results;
     } catch (SQLException e) {
-      e.printStackTrace();
+      Logger.getLogger(this.className).log(Level.SEVERE, "Unable to retrieve entries.");
+    }
+    return null;
+  }
+
+  public Map<String, Object> getEntryById(String tableName, Integer primaryKey) {
+    try {
+      String sqlQuery = "SELECT * FROM " + tableName + " WHERE Id=" + primaryKey + ";";
+      Statement statement = dbConnection.createStatement();
+      ResultSet resultSet = statement.executeQuery(sqlQuery);
+      ResultSetMetaData metaData = resultSet.getMetaData();
+      resultSet.next();
+      Map<String, Object> row = new HashMap<>();
+      for (int i = 1; i <= metaData.getColumnCount(); i++) {
+        row.put(metaData.getColumnLabel(i).toUpperCase(), resultSet.getObject(i));
+      }
+      return row;
+    } catch (SQLException e) {
+      Logger.getLogger(this.className).log(Level.SEVERE, "Unable to retrieve entry.");
     }
     return null;
   }

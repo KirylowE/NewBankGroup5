@@ -15,8 +15,13 @@ public class Dispatcher {
 
     IConnect dbase = ConnectAzureSql.getInstance(dbUsername, dbPassword);
     dbase.createConnection();
-    List<Map<String, Object>> data = dbase.getEntries("Customer");
-    System.out.println(data);
+    List<Map<String, Object>> results = dbase.getEntries("Customer");
+    System.out.println(results);
+    System.out.println("-----------");
+    Map<String, Object> result = dbase.getEntryById("Customer", 2);
+    System.out.println(result);
+    System.out.println("-----------");
+
 
   }
 }

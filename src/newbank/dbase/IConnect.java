@@ -11,4 +11,6 @@ public interface IConnect {
 
   List<Map<String, Object>> getEntries(String tableName);
 
+  Map<String, Object> getEntryById(String tableName, Integer primaryKey);
+
 }
