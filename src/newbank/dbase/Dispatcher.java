@@ -1,5 +1,8 @@
 package newbank.dbase;
 
+import java.util.List;
+import java.util.Map;
+
 public class Dispatcher {
   public static void main(String[] args) {
 
@@ -11,8 +14,9 @@ public class Dispatcher {
     }
 
     IConnect dbase = ConnectAzureSql.getInstance(dbUsername, dbPassword);
-    dbase.connect();
-
+    dbase.createConnection();
+    List<Map<String, Object>> data = dbase.getEntries("Customer");
+    System.out.println(data);
 
   }
 }
