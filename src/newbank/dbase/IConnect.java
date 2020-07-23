@@ -3,6 +3,9 @@ package newbank.dbase;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * IConnect interface defines methods that are required for a database connector
+ */
 public interface IConnect {
 
   void createConnection();
