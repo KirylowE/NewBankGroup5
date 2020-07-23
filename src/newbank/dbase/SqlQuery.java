@@ -6,7 +6,7 @@ package newbank.dbase;
  * The IConnect methods such as Create, Read, Update query
  * accept this type rather than a String.
  * <p>
- * * Why do we need this type? It makes the API implementation more clear,
+ * Why do we need this type? It makes the API implementation more clear,
  * we can make two methods that use the same name e.g. updateEntry():
  * 1st method accepts an SQL query string, you'll can build and pass any query
  * 2nd method accepts the field name, content and primary key of item to update,

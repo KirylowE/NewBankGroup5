@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * IConnect interface defines methods that are required for a database connector
+ * IConnect interface defines methods required for database connectors
  */
 public interface IConnect {
 
