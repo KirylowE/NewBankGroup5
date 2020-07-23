@@ -60,20 +60,56 @@ public class NewBank {
 					String type=in.next();
 					System.out.println("Please, indicate the amount of money you wish to deposit  ");
 					double amount=in.nextDouble();
-					return  (customers.get(customer.getKey())).addingMoneyToBalance(type,amount); 
+					return  (customers.get(customer.getKey())).addingMoneyToBalance(type,amount);
 			case "WITHDRAW": 
 					Scanner inToWithdraw= new Scanner(System.in);
 					System.out.println("Please, select the account you wish to withdraw money from ");
 					String typeToWithdraw=inToWithdraw.next();
 					System.out.println("Please, indicate the amount of money you wish to withdraw ");
 					double amountToWithdraw=inToWithdraw.nextDouble();
-					return  (customers.get(customer.getKey())).withdrawingMoneyToBalance(typeToWithdraw,amountToWithdraw); 
-			default : return "FAIL"; 
+					return  (customers.get(customer.getKey())).withdrawingMoneyToBalance(typeToWithdraw,amountToWithdraw);
+
+			case "NEWACCOUNT":
+								Scanner newAccount = new Scanner(System.in);
+								System.out.println("Please enter new Account Name: ");
+								String accountName = newAccount.next();
+								return addNewAccount(customer, accountName);
+			case "EXIT": break;
+			//default : return "FAIL";
 			}
 		}
 		return "FAIL";
 	}
 	private String showMyAccounts(CustomerID customer) {
 		return (customers.get(customer.getKey())).accountsToString();
-	} 
+	}
+
+	/**
+	 * Method to add a new account for a customer. Returns SUCCESS or FAIL
+	 * @param customer
+	 * @param name
+	 * @return
+	 */
+	private String addNewAccount(CustomerID customer, String name) {
+		String status = "FAIL";
+		Boolean accountFound = false;
+		Scanner openingBal = new Scanner(System.in);
+
+		accountFound = customers.get(customer.getKey()).addNewCustomerAccount(name);
+		if (!accountFound) {
+			System.out.println("Please enter Opening Balance: ");
+			Double openingBalance = openingBal.nextDouble();
+			while(openingBalance < 0){
+				System.out.println("Please enter a positive amount.");
+				openingBalance = openingBal.nextDouble();
+			}
+			customers.get(customer.getKey()).addAccount(new Account(name, openingBalance));
+			status = "SUCCESS";
+		}
+		else{
+			System.out.println("Account already exists.");
+		}
+		return status;
+	}
 }
+

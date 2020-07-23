@@ -13,7 +13,7 @@ public class Customer {
 	public String accountsToString() {
 		String s = "";
 		for(Account a : accounts) {
-			s += a.toString();
+			s += a.toString() + "\n";
 		}
 		return s;
 	}
@@ -49,6 +49,16 @@ public class Customer {
 		}
 		return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
 		
+	}
+
+	public Boolean addNewCustomerAccount(String name){
+		Boolean accFound = false;
+		for(Account acc: accounts){
+			if (acc.getAccountName().equals(name)) {
+				accFound = true;
+			}
+		}
+		return accFound;
 	}
 	
 }
