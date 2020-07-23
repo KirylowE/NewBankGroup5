@@ -67,7 +67,6 @@ public class NewBankClientHandler extends Thread{
 		out.println("3.MOVE <Amount> <From> <To>");
 		out.println("4.PAY <Person/Company> <Amount>");
 		out.println("5.EXIT");
-
 	}
 
 }
