@@ -50,5 +50,17 @@ public class Customer {
 		return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
 		
 	}
-	
+
+	public Boolean transferringMoney(String nameAccountSendsMoney, String ownerAccountNameReceivesMoney,String accountNameReceivesMoney, double amountToTransfer) {
+		for (Account a : accounts) {
+			if (a.getAccountName().equalsIgnoreCase(nameAccountSendsMoney)) {
+				if (amountToTransfer <= a.getBalance()) {
+					a.subtractMoneyToBalance(amountToTransfer);
+					return true;
+				}
+			}
+			return false;
+		}
+		return false; // if the flow does not enter in the for
+	}
 }
