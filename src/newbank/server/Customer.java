@@ -45,38 +45,48 @@ public class Customer {
 		return s;
 	}
 
+			//----
+			// ADD ACCOUNT
+			//----
+
 	public void addAccount(Account account) {
 		accounts.add(account);		
 	}
 
+			//----
+			// ADD MONEY
+			//----
+
 	public String addingMoneyToBalance(String typeAccount,double amountToAdd) {
 		for (Account a : accounts) {
 			if(a.getAccountName().equals(typeAccount)){
-				a.addMoneyToBalance(amountToAdd); 
-				// System.out.println(a.getAccountName()); 
+				a.addMoneyToBalance(amountToAdd);
 				return "REQUEST ACCEPTED"+ " - " + " DEPOSIT " + a.getAccountName(); 
 			}
 		}
 		return "REQUEST DENIED" + " - " + " DEPOSIT " + typeAccount;
-	}  
-	 
+	}
+
+			//----
+			// WITHDRAW MONEY
+			//----
+
 	public String withdrawingMoneyToBalance(String typeAccount,double amountToSubtract) {
-		//return addingMoneyToBalance(typeAccount,- amountToSubtract);
-		//or 
 		for (Account a : accounts) {
 			if(a.getAccountName().equals(typeAccount)){
 				if(amountToSubtract<a.getBalance() ) {
 					a.subtractMoneyToBalance(amountToSubtract);
-					// System.out.println(a.getAccountName()); 
 					return "REQUEST ACCEPTED " + " - "  + " WITHDRAW "  + a.getAccountName(); 
 				}
 				else return "REQUEST DENIED " + " - " + " Not enough money for bank account "+ a.getAccountName()+ " withdrawal";
 			}
 		}
 		return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
-		
 	}
 
+			//----
+			//  NEW CUSTOMER ACCOUNT
+			//----
 
 	public Boolean addNewCustomerAccount(String name){
 		Boolean accFound = false;
@@ -87,7 +97,6 @@ public class Customer {
 		}
 		return accFound;
 	}
-	
 
 			//----
 			// PAY
@@ -109,7 +118,6 @@ public class Customer {
 			//----
 			// MOVE
 			//----
-
 
 	public String move(String accountFrom, String accountTo , double amountToMove) {
 
