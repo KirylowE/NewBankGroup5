@@ -60,14 +60,14 @@ public final class Dispatcher {
   }
 
   private String getStatus() {
-    return dbase.checkConnection() ? "OK" : "Failed";
+    return this.dbase.checkConnection() ? "OK" : "Failed";
   }
 
   public HashMap<String, Customer> getCustomers() {
     // TODO: create central mapping for the table names
 
     HashMap<String, Customer> output = new HashMap<>();
-    List<Map<String, Object>> entries = dbase.getEntries("Customer");
+    List<Map<String, Object>> entries = this.dbase.getEntries("Customer");
 
     for (Map<String, Object> entry : entries) {
       // entity must be created with the primary key provided
@@ -86,7 +86,7 @@ public final class Dispatcher {
     // TODO: create central mapping for the table names
 
     HashMap<String, Account> output = new HashMap<>();
-    List<Map<String, Object>> entries = dbase.getEntries("Accounts");
+    List<Map<String, Object>> entries = this.dbase.getEntries("Accounts");
 
     for (Map<String, Object> entry : entries) {
       // entity must be created with the primary key provided
