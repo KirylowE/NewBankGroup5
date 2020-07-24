@@ -1,10 +1,12 @@
 package newbank.dbase;
 
+import newbank.server.Account;
 import newbank.server.Customer;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class manages all actions related to the data persistence,
@@ -63,23 +65,50 @@ public final class Dispatcher {
   }
 
   public HashMap<String, Customer> getCustomers() {
-    System.out.println("Connection established... " + this.getStatus());
-    System.out.println("Getting Customers list.");
     // TODO: create central mapping for the table names
 
-    HashMap<String, Customer> customers = new HashMap<>();
+    HashMap<String, Customer> output = new HashMap<>();
     List<Map<String, Object>> entries = dbase.getEntries("Customer");
 
     for (Map<String, Object> entry : entries) {
-      // a customer must be created with the primary key provided
+      // entity must be created with the primary key provided
       String primaryKey = entry.get("Id").toString();
       Customer customer = new Customer(primaryKey);
       // data fields are saved using field setters
       customer.setFirstName(entry.get("FirstName").toString());
       customer.setLastName(entry.get("LastName").toString());
       // add customer object to the collection
-      customers.put(entry.get("FirstName").toString(), customer);
+      output.put(entry.get("FirstName").toString(), customer);
     }
+    return output;
+  }
+
+  public HashMap<String, Account> getAccounts() {
+    // TODO: create central mapping for the table names
+
+    HashMap<String, Account> output = new HashMap<>();
+    List<Map<String, Object>> entries = dbase.getEntries("Accounts");
+
+    for (Map<String, Object> entry : entries) {
+      // entity must be created with the primary key provided
+      String primaryKey = entry.get("Id").toString();
+      Account account = new Account(primaryKey, entry.get("AccountTypeID").toString(), Double.parseDouble(entry.get("Balance").toString()));
+      // data fields are saved using field setters
+      // ...
+      // add entity to the collection
+      output.put(entry.get("Id").toString(), account);
+    }
+    return output;
+  }
+
+
+  public HashMap<String, Customer> getCustomersAccounts() {
+    // TODO: create central mapping for the table names
+
+    HashMap<String, Customer> customers = new HashMap<>();
+    HashMap<String, Customer> tbCustomer = this.getCustomers();
+    HashMap<String, Account> tbAccounts = this.getAccounts();
+
     return customers;
   }
 
