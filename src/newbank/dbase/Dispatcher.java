@@ -3,9 +3,28 @@ package newbank.dbase;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class manages all actions related to the data persistence,
+ * a bridge between the database read and write operations and the business logic.
+ * Methods in this class retrieve and process the data. Other classes can request data
+ * and expect Java objects returned rather than a string/text format
+ * <p>
+ * It uses a basic singleton pattern to ensure that it can only be instantiated once.
+ */
 public final class Dispatcher {
 
-  private IConnect dbase;
+  /**
+   * This class also instantiates and exposes the IConnect as 'dbase' object, which gives
+   * direct access to the Create, Read and Update methods using the following syntax:
+   * ```
+   * Dispatcher dispatcher = Dispatcher.getInstance();
+   * dispatcher.dbase.getEntries("Customer");
+   * ```
+   * Most actions should be started through the methods included in this class,
+   * the access to 'dbase' is given for additional flexibility
+   **/
+  public IConnect dbase;
+
   private static Dispatcher SingleInstance;
 
   // private constructor prevents from instantiating this class
