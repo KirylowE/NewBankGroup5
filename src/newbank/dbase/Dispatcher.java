@@ -65,16 +65,20 @@ public final class Dispatcher {
   public HashMap<String, Customer> getCustomers() {
     System.out.println("Connection established... " + this.getStatus());
     System.out.println("Getting Customers list.");
-    // table name
     // TODO: create central mapping for the table names
-    String tableName = "Customer";
+
     HashMap<String, Customer> customers = new HashMap<>();
-    List<Map<String, Object>> entries = dbase.getEntries(tableName);
+    List<Map<String, Object>> entries = dbase.getEntries("Customer");
 
     for (Map<String, Object> entry : entries) {
-      String customerName = entry.get("FIRSTNAME").toString();
-      Customer customer = new Customer();
-      customers.put(customerName, customer);
+      // a customer must be created with the primary key provided
+      String primaryKey = entry.get("Id").toString();
+      Customer customer = new Customer(primaryKey);
+      // data fields are saved using field setters
+      customer.setFirstName(entry.get("FirstName").toString());
+      customer.setLastName(entry.get("LastName").toString());
+      // add customer object to the collection
+      customers.put(entry.get("FirstName").toString(), customer);
     }
     return customers;
   }

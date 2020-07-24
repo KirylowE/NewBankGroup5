@@ -61,7 +61,7 @@ public final class ConnectAzureSql implements IConnect {
       while (resultSet.next()) {
         Map<String, Object> row = new HashMap<>();
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
-          row.put(metaData.getColumnLabel(i).toUpperCase(), resultSet.getObject(i));
+          row.put(metaData.getColumnLabel(i).trim(), resultSet.getObject(i));
         }
         results.add(row);
       }
@@ -74,14 +74,14 @@ public final class ConnectAzureSql implements IConnect {
 
   public Map<String, Object> getEntryById(String tableName, Integer primaryKey) {
     try {
-      String sqlQuery = "SELECT * FROM " + tableName + " WHERE Id=" + primaryKey + ";";
+      String sqlQuery = "SELECT * FROM " + tableName + " WHERE 'Id'=" + primaryKey + ";";
       Statement statement = dbConnection.createStatement();
       ResultSet resultSet = statement.executeQuery(sqlQuery);
       ResultSetMetaData metaData = resultSet.getMetaData();
       resultSet.next();
       Map<String, Object> row = new HashMap<>();
       for (int i = 1; i <= metaData.getColumnCount(); i++) {
-        row.put(metaData.getColumnLabel(i).toUpperCase(), resultSet.getObject(i));
+        row.put(metaData.getColumnLabel(i).trim(), resultSet.getObject(i));
       }
       return row;
     } catch (SQLException e) {
