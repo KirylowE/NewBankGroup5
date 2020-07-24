@@ -1,12 +1,21 @@
 package newbank.server;
 
 public class Account {
-	
+
+	private String primaryKey;
+
 	private String accountName;
 	private double openingBalance;
 	private double amountForBalance;
 
 	public Account(String accountName, double openingBalance){ //openingBalance= currentBalance
+		this.accountName = accountName;
+		this.openingBalance = openingBalance;
+	}
+
+	// temporary second constructor to create account with a primary key without disturbing existing references
+	public Account(String primaryKey, String accountName, double openingBalance){
+		this.primaryKey = primaryKey;
 		this.accountName = accountName;
 		this.openingBalance = openingBalance;
 	}

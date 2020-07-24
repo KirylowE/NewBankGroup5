@@ -5,11 +5,38 @@ import java.util.ArrayList;
 public class Customer {
 	
 	private ArrayList<Account> accounts;
-	
-	public Customer() {
-		accounts = new ArrayList<>();
+
+	private String primaryKey;
+	private String firstName;
+	private String lastName;
+
+	public Customer(String primaryKey) {
+		this.accounts = new ArrayList<>();
+		this.primaryKey = primaryKey;
 	}
-	
+
+	// setter is disabled for the primary key, it must be set during object creation!
+	public String getPrimaryKey() {
+		return primaryKey;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
 	public String accountsToString() {
 		String s = "";
 		for(Account a : accounts) {
