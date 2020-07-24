@@ -14,13 +14,13 @@ public interface IConnect {
 
   List<Map<String, Object>> getEntries(String tableName);
 
-  Map<String, Object> getEntryById(String tableName, Integer primaryKey);
+  Map<String, Object> getEntryById(String tableName, String primaryKey);
 
   void createEntry(String tableName);
 
   void createEntry(SqlQuery sqlQuery);
 
-  void updateEntry(String tableName, Integer primaryKey);
+  void updateEntry(String tableName, String primaryKey);
 
   void updateEntry(SqlQuery sqlQuery);
 

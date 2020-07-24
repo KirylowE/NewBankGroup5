@@ -6,7 +6,6 @@ import newbank.server.Customer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * This class manages all actions related to the data persistence,
@@ -113,33 +112,44 @@ public final class Dispatcher {
   }
 
 
+  /**
+   * Example usages of the 'dbase' object which is publicly available through Dispatcher.
+   *
+   * Inside the dispatcher class:
+   * ----------------------------
+   * dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
+   *
+   * Everywhere else, after instantiating a Dispatcher object:
+   * ---------------------------------------------------------
+   * Dispatcher dispatcher = Dispatcher.getInstance();
+   * dispatcher.dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
+   *
+   **/
+
   public static void main(String[] args) {
+
+    System.out.println("creating");
 
     String dbUsername = EnvironmentVariable.getVariableValue("NB_DB_USERNAME");
     String dbPassword = EnvironmentVariable.getVariableValue("NB_DB_PASSWORD");
-
     if (dbUsername == null || dbPassword == null) {
       throw new Error("Please set the environment variables NB_DB_USERNAME and NB_DB_PASSWORD");
     }
-
-    /*
     IConnect dbase = ConnectAzureSql.getInstance(dbUsername, dbPassword);
     dbase.createConnection();
     List<Map<String, Object>> results = dbase.getEntries("Customer");
     System.out.println(results);
     System.out.println("-----------");
-    Map<String, Object> result = dbase.getEntryById("Customer", 2);
+    Map<String, Object> result = dbase.getEntryById("Customer", "2");
     System.out.println(result);
     System.out.println("-----------");
-    dbase.updateEntry("Customer", 2);
-    dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE Id=2;"));
-    Map<String, Object> updatedResult = dbase.getEntryById("Customer", 2);
+    dbase.updateEntry("Customer", "2");
+    dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE 'Id'='2';"));
+    Map<String, Object> updatedResult = dbase.getEntryById("Customer", "2");
     System.out.println(updatedResult);
     System.out.println("-----------");
     dbase.createEntry("Customer");
     dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
-
-     */
 
   }
 }

@@ -72,9 +72,9 @@ public final class ConnectAzureSql implements IConnect {
     return null;
   }
 
-  public Map<String, Object> getEntryById(String tableName, Integer primaryKey) {
+  public Map<String, Object> getEntryById(String tableName, String primaryKey) {
     try {
-      String sqlQuery = "SELECT * FROM " + tableName + " WHERE 'Id'=" + primaryKey + ";";
+      String sqlQuery = String.format("SELECT * FROM %s WHERE Id=%s;", tableName, primaryKey);
       Statement statement = dbConnection.createStatement();
       ResultSet resultSet = statement.executeQuery(sqlQuery);
       ResultSetMetaData metaData = resultSet.getMetaData();
@@ -104,7 +104,7 @@ public final class ConnectAzureSql implements IConnect {
     }
   }
 
-  public void updateEntry(String tableName, Integer primaryKey) {
+  public void updateEntry(String tableName, String primaryKey) {
     SqlQuery sqlQuery = new SqlQuery("UPDATE " + tableName + " SET FirstName='Sabina' WHERE Id=" + primaryKey + ";");
     this.updateEntry(sqlQuery);
   }
