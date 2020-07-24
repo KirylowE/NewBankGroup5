@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConnectAzureSql implements IConnect {
+public final class ConnectAzureSql implements IConnect {
 
   private Connection dbConnection;
   private final String dbUsername;
