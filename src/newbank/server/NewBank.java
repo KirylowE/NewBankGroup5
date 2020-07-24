@@ -58,20 +58,24 @@ public class NewBank {
           
       case "DEPOSIT" :
         Scanner in= new Scanner(System.in);
-        System.out.println("Please, select the account you wish deposit money to");
+        System.out.println("Please, select the account to deposit money: ");
         String type=in.next();
-        System.out.println("Please, indicate the amount of money you wish to deposit  ");
+        System.out.println("Please, indicate the amount of money to deposit:  ");
         double amount=in.nextDouble();
-        if(amount <= 0) return "FAIL";
+        if(amount <= 0){
+        	return "FAIL";
+        }
         return  (customers.get(customer.getKey())).addingMoneyToBalance(type,amount);
           
       case "WITHDRAW":
         Scanner inToWithdraw= new Scanner(System.in);
-        System.out.println("Please, select the account you wish to withdraw money from ");
+        System.out.println("Please, select the account to withdraw money: ");
         String typeToWithdraw=inToWithdraw.next();
-        System.out.println("Please, indicate the amount of money you wish to withdraw ");
+        System.out.println("Please, indicate the amount of money: ");
         double amountToWithdraw=inToWithdraw.nextDouble();
-        if(amountToWithdraw <= 0) return "FAIL";
+        if(amountToWithdraw <= 0){
+        	return "FAIL";
+        }
         return  (customers.get(customer.getKey())).withdrawingMoneyToBalance(typeToWithdraw,amountToWithdraw);
 
 			case "NEWACCOUNT":
@@ -88,10 +92,13 @@ public class NewBank {
         String typeToMove2=inToMove.next();
         System.out.println("Please, indicate the amount of money: ");
         double amountToMove=inToMove.nextDouble();
-        if (amountToMove<=0) return "FAIL";
-        else return (customers.get(customer.getKey())).move(typeToMove1,typeToMove2,amountToMove);
-          
-          
+        if (amountToMove <= 0){
+        	return "FAIL";
+        }
+        else{
+        	return (customers.get(customer.getKey())).move(typeToMove1,typeToMove2,amountToMove);
+        }
+
       case "PAY":
         Scanner inToTransfer= new Scanner(System.in);
         System.out.println("Please, select the account from which you wish to pay: " );
@@ -102,7 +109,9 @@ public class NewBank {
         String typeToTransfer3=inToTransfer.next();
         System.out.println("Please, indicate the amount of money you wish to pay: ");
         double amountToTransfer=inToTransfer.nextDouble();
-        if(amountToTransfer <= 0 ) return "FAIL";
+        if(amountToTransfer <= 0 ) {
+        	return "FAIL";
+        }
         Boolean transferResult=(customers.get(customer.getKey())).pay(typeToTransfer1, typeToTransfer2, typeToTransfer3,amountToTransfer);
         System.out.println(transferResult);
         if(transferResult){
@@ -114,7 +123,6 @@ public class NewBank {
 			case "EXIT": break;
           
 			default : return "FAIL";
-
 			}
 		}
 		return "FAIL";
