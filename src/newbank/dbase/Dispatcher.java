@@ -135,7 +135,7 @@ public final class Dispatcher {
     System.out.println(result);
     System.out.println("-----------");
     dispatcher.dbase.updateEntry("Customer", "2");
-    dispatcher.dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE 'Id'='2';"));
+    dispatcher.dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE Id='2';"));
     Map<String, Object> updatedResult = dispatcher.dbase.getEntryById("Customer", "2");
     System.out.println(updatedResult);
     System.out.println("-----------");
