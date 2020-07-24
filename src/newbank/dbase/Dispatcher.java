@@ -1,5 +1,8 @@
 package newbank.dbase;
 
+import newbank.server.Customer;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +44,7 @@ public final class Dispatcher {
 
 
   private void createDbaseConnection() {
-    System.out.println("Creating a database connection...");
+    System.out.print("Creating a database connection...");
 
     String dbUsername = EnvironmentVariable.getVariableValue("NB_DB_USERNAME");
     String dbPassword = EnvironmentVariable.getVariableValue("NB_DB_PASSWORD");
@@ -52,17 +55,28 @@ public final class Dispatcher {
 
     this.dbase = ConnectAzureSql.getInstance(dbUsername, dbPassword);
     this.dbase.createConnection();
+    System.out.println(this.getStatus());
   }
 
-  //public List<Map<String, Customer>> getCustomers() {
-  public void getCustomers() {
-    System.out.println("Getting Customers list...");
-    System.out.println(dbase.checkConnection());
+  private String getStatus() {
+    return dbase.checkConnection() ? "OK" : "Failed";
+  }
+
+  public HashMap<String, Customer> getCustomers() {
+    System.out.println("Connection established... " + this.getStatus());
+    System.out.println("Getting Customers list.");
+    // table name
+    // TODO: create central mapping for the table names
     String tableName = "Customer";
-    List<Map<String, Object>> customers = dbase.getEntries(tableName);
-    for (Object x : customers) {
-      System.out.println(x);
+    HashMap<String, Customer> customers = new HashMap<>();
+    List<Map<String, Object>> entries = dbase.getEntries(tableName);
+
+    for (Map<String, Object> entry : entries) {
+      String customerName = entry.get("FIRSTNAME").toString();
+      Customer customer = new Customer();
+      customers.put(customerName, customer);
     }
+    return customers;
   }
 
 

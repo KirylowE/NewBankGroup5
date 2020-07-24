@@ -1,18 +1,49 @@
 package newbank.server;
 
+import newbank.dbase.Dispatcher;
+import newbank.dbase.EnvironmentVariable;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class NewBank {
-	
-	private static final NewBank bank = new NewBank();
-	
-	private HashMap<String,Customer> customers;
-	
-	private NewBank() {
-		customers = new HashMap<>();
-		addTestData();
-	}
+
+  private static final NewBank bank = new NewBank();
+
+  private HashMap<String, Customer> customers;
+
+  /**
+   * Constructor uses a distinction between development and production mode.
+   * This should not make a difference to object types in this class;
+   * E.g. customers lists are retrieved from different sources and can be used interchangeably
+   */
+  private NewBank() {
+    String envDev = EnvironmentVariable.getVariableValue("NB_DEV");
+    boolean isDev = (envDev != null) && envDev.equals("true");
+    if (isDev) {
+      // Development mode that uses the hardcoded test data
+      System.out.println("New Bank is running in Development mode, local test data is used");
+      // get customers by calling the local method that adds few test records
+      customers = new HashMap<>();
+      addTestData();
+    } else {
+      // Production mode that uses the database
+      System.out.println("New Bank is running in Production mode, database is used.");
+      // Start the dispatcher before running database operations
+      Dispatcher dispatcher = Dispatcher.getInstance();
+      // get the customers from database, start an action through the dispatcher object.
+      customers = dispatcher.getCustomers();
+    }
+  }
+
+
+  // temporary main method to test the functionality of this class locally,
+  // without starting the resource-hungry server
+  // TODO: remove the main method once this class is complete
+  public static void main(String[] args) {
+
+  }
+
 	
 	private void addTestData() {
 		
