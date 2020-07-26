@@ -3,140 +3,158 @@ package newbank.server;
 import java.util.ArrayList;
 
 public class Customer {
-	
-	private ArrayList<Account> accounts;
 
-	private String primaryKey;
-	private String firstName;
-	private String lastName;
+  private ArrayList<Account> accounts;
 
-	public Customer(String primaryKey) {
-		this.accounts = new ArrayList<>();
-		this.primaryKey = primaryKey;
-	}
+  // unique id
+  private String primaryKey;
+  // `Jennifer`
+  private String firstName;
+  // `Moss`
+  private String lastName;
 
-	// setter is disabled for the primary key, it must be set during object creation!
-	public String getPrimaryKey() {
-		return primaryKey;
-	}
+  public Customer(String primaryKey) {
+    this.accounts = new ArrayList<>();
+    this.primaryKey = primaryKey;
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  // setter is disabled for the primary key, it must be set during object creation!
+  public String getPrimaryKey() {
+    return primaryKey;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  // `Jennifer Moss`
+  public String getFullName() {
+    if (this.firstName != null && this.lastName != null) {
+      return this.firstName + " " + this.lastName;
+    }
+    return null;
+  }
+
+  // `Jennifer.Moss`
+  public String getUserName() {
+    if (this.firstName != null && this.lastName != null) {
+      return this.firstName + "." + this.lastName;
+    }
+    return null;
+  }
 
 
-	public String accountsToString() {
-		String s = "";
-		for(Account a : accounts) {
-			s += a.toString() + "\n";
-		}
-		return s;
-	}
+  public String accountsToString() {
+    String s = "";
+    for (Account a : accounts) {
+      s += a.toString() + "\n";
+    }
+    return s;
+  }
 
-			//----
-			// ADD ACCOUNT
-			//----
+  //----
+  // ADD ACCOUNT
+  //----
 
-	public void addAccount(Account account) {
-		accounts.add(account);		
-	}
+  public void addAccount(Account account) {
+    accounts.add(account);
+  }
 
-			//----
-			// ADD MONEY
-			//----
+  //----
+  // ADD MONEY
+  //----
 
-	public String addingMoneyToBalance(String typeAccount,double amountToAdd) {
-		for (Account a : accounts) {
-			if(a.getAccountName().equals(typeAccount)){
-				a.addMoneyToBalance(amountToAdd);
-				return "REQUEST ACCEPTED"+ " - " + " DEPOSIT " + a.getAccountName(); 
-			}
-		}
-		return "REQUEST DENIED" + " - " + " DEPOSIT " + typeAccount;
-	}
+  public String addingMoneyToBalance(String typeAccount, double amountToAdd) {
+    for (Account a : accounts) {
+      if (a.getAccountName().equals(typeAccount)) {
+        a.addMoneyToBalance(amountToAdd);
+        return "REQUEST ACCEPTED" + " - " + " DEPOSIT " + a.getAccountName();
+      }
+    }
+    return "REQUEST DENIED" + " - " + " DEPOSIT " + typeAccount;
+  }
 
-			//----
-			// WITHDRAW MONEY
-			//----
+  //----
+  // WITHDRAW MONEY
+  //----
 
-	public String withdrawingMoneyToBalance(String typeAccount,double amountToSubtract) {
-		for (Account a : accounts) {
-			if(a.getAccountName().equals(typeAccount)){
-				if(amountToSubtract<a.getBalance() ) {
-					a.subtractMoneyToBalance(amountToSubtract);
-					return "REQUEST ACCEPTED " + " - "  + " WITHDRAW "  + a.getAccountName(); 
-				}
-				else return "REQUEST DENIED " + " - " + " Not enough money for bank account "+ a.getAccountName()+ " withdrawal";
-			}
-		}
-		return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
-	}
+  public String withdrawingMoneyToBalance(String typeAccount, double amountToSubtract) {
+    for (Account a : accounts) {
+      if (a.getAccountName().equals(typeAccount)) {
+        if (amountToSubtract < a.getBalance()) {
+          a.subtractMoneyToBalance(amountToSubtract);
+          return "REQUEST ACCEPTED " + " - " + " WITHDRAW " + a.getAccountName();
+        } else return "REQUEST DENIED " + " - " + " Not enough money for bank account " + a.getAccountName() + " withdrawal";
+      }
+    }
+    return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
+  }
 
-			//----
-			//  NEW CUSTOMER ACCOUNT
-			//----
+  //----
+  //  NEW CUSTOMER ACCOUNT
+  //----
 
-	public Boolean addNewCustomerAccount(String name){
-		Boolean accFound = false;
-		for(Account acc: accounts){
-			if (acc.getAccountName().equals(name)) {
-				accFound = true;
-			}
-		}
-		return accFound;
-	}
+  public Boolean addNewCustomerAccount(String name) {
+    Boolean accFound = false;
+    for (Account acc : accounts) {
+      if (acc.getAccountName().equals(name)) {
+        accFound = true;
+      }
+    }
+    return accFound;
+  }
 
-			//----
-			// PAY
-			//----
+  //----
+  // PAY
+  //----
 
-	public Boolean pay(String nameAccountSendsMoney, String ownerAccountNameReceivesMoney,String accountNameReceivesMoney, double amountToTransfer) {
-		for (Account a : accounts) {
-			if (a.getAccountName().equalsIgnoreCase(nameAccountSendsMoney)) {
-				if (amountToTransfer <= a.getBalance()) {
-					a.subtractMoneyToBalance(amountToTransfer);
-					return true;
-				}
-			}
-			return false;
-		}
-		return false; // if the flow does not enter in the for
-	}
+  public Boolean pay(String nameAccountSendsMoney, String ownerAccountNameReceivesMoney, String accountNameReceivesMoney, double amountToTransfer) {
+    for (Account a : accounts) {
+      if (a.getAccountName().equalsIgnoreCase(nameAccountSendsMoney)) {
+        if (amountToTransfer <= a.getBalance()) {
+          a.subtractMoneyToBalance(amountToTransfer);
+          return true;
+        }
+      }
+      return false;
+    }
+    return false; // if the flow does not enter in the for
+  }
 
-			//----
-			// MOVE
-			//----
+  //----
+  // MOVE
+  //----
 
-	public String move(String accountFrom, String accountTo , double amountToMove) {
+  public String move(String accountFrom, String accountTo, double amountToMove) {
 
-		for ( Account a: accounts) {
-			if(a.getAccountName().equals(accountFrom)) {
-				if(amountToMove<=a.getBalance()){
-					a.subtractMoneyToBalance(amountToMove);
-					for (Account b:accounts){
-						if(b.getAccountName().equals(accountTo)){
-							b.addMoneyToBalance(amountToMove);
-							return "SUCCESS";
-						}
-					}
-				}
-			}
-		}
+    for (Account a : accounts) {
+      if (a.getAccountName().equals(accountFrom)) {
+        if (amountToMove <= a.getBalance()) {
+          a.subtractMoneyToBalance(amountToMove);
+          for (Account b : accounts) {
+            if (b.getAccountName().equals(accountTo)) {
+              b.addMoneyToBalance(amountToMove);
+              return "SUCCESS";
+            }
+          }
+        }
+      }
+    }
 
-		return "FAIL";
-	}
+    return "FAIL";
+  }
 
 
 }
