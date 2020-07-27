@@ -14,7 +14,11 @@ public interface IConnect {
 
   List<Map<String, Object>> getEntries(String tableName);
 
+  List<Map<String, Object>> getEntries(SqlQuery sqlQuery);
+
   Map<String, Object> getEntryById(String tableName, String primaryKey);
+
+  Map<String, Object> getEntryByProperty(SqlQuery sqlQuery);
 
   void createEntry(String tableName);
 

@@ -52,10 +52,14 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   public List<Map<String, Object>> getEntries(String tableName) {
+    SqlQuery sqlQuery = new SqlQuery("SELECT * FROM " + tableName + ";");
+    return this.getEntries(sqlQuery);
+  }
+
+  public List<Map<String, Object>> getEntries(SqlQuery sqlQuery) {
     try {
-      String sqlQuery = "SELECT * FROM " + tableName + ";";
       Statement statement = dbConnection.createStatement();
-      ResultSet resultSet = statement.executeQuery(sqlQuery);
+      ResultSet resultSet = statement.executeQuery(sqlQuery.toString());
       ResultSetMetaData metaData = resultSet.getMetaData();
       List<Map<String, Object>> results = new ArrayList<>();
       while (resultSet.next()) {
@@ -73,10 +77,15 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   public Map<String, Object> getEntryById(String tableName, String primaryKey) {
+    SqlQuery sqlQuery = new SqlQuery(String.format("SELECT * FROM %s WHERE Id=%s;", tableName, primaryKey));
+    return this.getEntryByProperty(sqlQuery);
+  }
+
+
+  public Map<String, Object> getEntryByProperty(SqlQuery sqlQuery) {
     try {
-      String sqlQuery = String.format("SELECT * FROM %s WHERE Id=%s;", tableName, primaryKey);
       Statement statement = dbConnection.createStatement();
-      ResultSet resultSet = statement.executeQuery(sqlQuery);
+      ResultSet resultSet = statement.executeQuery(sqlQuery.toString());
       ResultSetMetaData metaData = resultSet.getMetaData();
       resultSet.next();
       Map<String, Object> row = new HashMap<>();
@@ -85,7 +94,7 @@ public final class ConnectAzureSql implements IConnect {
       }
       return row;
     } catch (SQLException e) {
-      Logger.getLogger(this.className).log(Level.SEVERE, "Unable to retrieve entry.");
+      Logger.getLogger(this.className).log(Level.INFO, "Unable to retrieve entry.");
     }
     return null;
   }

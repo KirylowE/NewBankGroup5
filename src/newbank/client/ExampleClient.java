@@ -22,13 +22,16 @@ public class ExampleClient extends Thread{
 			private BufferedReader bankServerIn = new BufferedReader(new InputStreamReader(server.getInputStream())); 
 			public void run() {
 				try {
-					while(true) {
+					while (true) {
 						String responce = bankServerIn.readLine();
+						// server response is null, terminate
+						if (responce == null) {
+							break;
+						}
 						System.out.println(responce);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
-					return;
 				}
 			}
 		};

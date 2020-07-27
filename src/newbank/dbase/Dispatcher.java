@@ -3,6 +3,7 @@ package newbank.dbase;
 import newbank.server.Account;
 import newbank.server.Customer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,24 @@ public final class Dispatcher {
     return this.dbase.checkConnection() ? "OK" : "Failed";
   }
 
+
+  public Customer getCustomerByUserName(String userNameEntered) {
+    // TODO: create central mapping for the table names
+    SqlQuery usernameQuery = new SqlQuery("SELECT * FROM Customer WHERE UserName='" + userNameEntered + "';");
+    Map<String, Object> entry = this.dbase.getEntryByProperty(usernameQuery);
+    if (entry != null) {
+      // entity must be created with the primary key  and user name provided
+      String primaryKey = entry.get("Id").toString();
+      String userName = entry.get("UserName").toString();
+      Customer customer = new Customer(primaryKey, userName);
+      // data fields are saved using field setters
+      customer.setFirstName(entry.get("FirstName").toString());
+      customer.setLastName(entry.get("LastName").toString());
+      return customer;
+    }
+    return null;
+  }
+
   public HashMap<String, Customer> getCustomers() {
     // TODO: create central mapping for the table names
 
@@ -70,46 +89,34 @@ public final class Dispatcher {
     List<Map<String, Object>> entries = this.dbase.getEntries("Customer");
 
     for (Map<String, Object> entry : entries) {
-      // entity must be created with the primary key provided
+      // entity must be created with the primary key  and user name provided
       String primaryKey = entry.get("Id").toString();
-      Customer customer = new Customer(primaryKey);
+      String userName = entry.get("UserName").toString();
+      Customer customer = new Customer(primaryKey, userName);
       // data fields are saved using field setters
       customer.setFirstName(entry.get("FirstName").toString());
       customer.setLastName(entry.get("LastName").toString());
       // add customer object to the collection
-      output.put(entry.get("FirstName").toString(), customer);
+      output.put(entry.get("UserName").toString(), customer);
     }
     return output;
   }
 
-  public HashMap<String, Account> getAccounts() {
-    // TODO: create central mapping for the table names
-
-    HashMap<String, Account> output = new HashMap<>();
-    List<Map<String, Object>> entries = this.dbase.getEntries("Accounts");
-
+  public List<Account> getCustomerAccounts(Customer customer) {
+    List<Account> output = new ArrayList<>();
+    SqlQuery sqlQuery = new SqlQuery("SELECT * FROM Accounts WHERE CustomerID=" + customer.getPrimaryKey());
+    List<Map<String, Object>> entries = this.dbase.getEntries(sqlQuery);
     for (Map<String, Object> entry : entries) {
       // entity must be created with the primary key provided
       String primaryKey = entry.get("Id").toString();
       Account account = new Account(primaryKey, entry.get("AccountTypeID").toString(), Double.parseDouble(entry.get("Balance").toString()));
-      // data fields are saved using field setters
-      // ...
-      // add entity to the collection
-      output.put(entry.get("Id").toString(), account);
+      output.add(account);
     }
     return output;
   }
 
 
-  public HashMap<String, Customer> getCustomersAccounts() {
-    // TODO: create central mapping for the table names
 
-    HashMap<String, Customer> customers = new HashMap<>();
-    HashMap<String, Customer> tbCustomer = this.getCustomers();
-    HashMap<String, Account> tbAccounts = this.getAccounts();
-
-    return customers;
-  }
 
 
   /**
