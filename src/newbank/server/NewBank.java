@@ -15,6 +15,7 @@ public class NewBank {
   private final String className = NewBankClientHandler.class.getName();
   private HashMap<String, Customer> customers;
   private Dispatcher dispatcher;
+  private Customer customer;
 
 
   /**
@@ -50,7 +51,8 @@ public class NewBank {
 
   }
 
-  public Customer getCustomerByUserName(String userName) {
+  public Customer initLoggedCustomer(String userName) {
+    this.customer.setAccounts();
     return customers.get(userName);
   }
 
@@ -90,7 +92,7 @@ public class NewBank {
     // get customer object
     Customer customer = this.dispatcher.getCustomerByUserName(userName.trim());
     if (customer != null) {
-      System.out.println(userName);
+      this.customer = customer;
       return new CustomerID(userName);
     }
     return null;
@@ -112,7 +114,7 @@ public class NewBank {
         if(amount <= 0){
         	return "FAIL";
         }
-        return  (customers.get(customer.getKey())).addingMoneyToBalance(type,amount);
+        return this.customer.addingMoneyToBalance(type, amount);
 
       case "WITHDRAW":
         Scanner inToWithdraw= new Scanner(System.in);

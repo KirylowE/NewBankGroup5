@@ -1,20 +1,27 @@
 package newbank.server;
 
+import newbank.dbase.Dispatcher;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Customer {
 
-  private ArrayList<Account> accounts;
+  private List<Account> accounts;
 
   private String primaryKey;
   private String firstName;
   private String lastName;
   private String userName;
 
+  private Dispatcher dispatcher;
+
   public Customer(String primaryKey, String userName) {
     this.accounts = new ArrayList<>();
     this.primaryKey = primaryKey;
     this.userName = userName;
+    // Start the dispatcher before running database operations
+    this.dispatcher = Dispatcher.getInstance();
   }
 
   // setters are disabled for the primary key and user name, these must be set during object creation!
@@ -49,6 +56,14 @@ public class Customer {
     return null;
   }
 
+  public void setAccounts() {
+    this.accounts = this.dispatcher.getCustomerAccounts(this);
+  }
+
+  public List<Account> getAccounts() {
+    return this.accounts;
+  }
+
   public String accountsToString() {
     String s = "";
     for (Account a : accounts) {
@@ -70,10 +85,13 @@ public class Customer {
   //----
 
   public String addingMoneyToBalance(String typeAccount, double amountToAdd) {
-    for (Account a : accounts) {
+    System.out.println("Adding " + amountToAdd + " to account " + typeAccount + " for user " + this.getUserName());
+    for (Account a : this.accounts) {
+        System.out.println(a);
+        System.out.println(a.getAccountName());
       if (a.getAccountName().equals(typeAccount)) {
         a.addMoneyToBalance(amountToAdd);
-        return "REQUEST ACCEPTED" + " - " + " DEPOSIT " + a.getAccountName();
+        return "\nREQUEST ACCEPTED" + " - " + " DEPOSIT " + a.getAccountName() + ". NEW BALANCE = " + a.getBalance() + "\n";
       }
     }
     return "REQUEST DENIED" + " - " + " DEPOSIT " + typeAccount;

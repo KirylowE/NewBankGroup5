@@ -3,6 +3,7 @@ package newbank.dbase;
 import newbank.server.Account;
 import newbank.server.Customer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,34 +102,21 @@ public final class Dispatcher {
     return output;
   }
 
-  public HashMap<String, Account> getAccounts() {
-    // TODO: create central mapping for the table names
-
-    HashMap<String, Account> output = new HashMap<>();
-    List<Map<String, Object>> entries = this.dbase.getEntries("Accounts");
-
+  public List<Account> getCustomerAccounts(Customer customer) {
+    List<Account> output = new ArrayList<>();
+    SqlQuery sqlQuery = new SqlQuery("SELECT * FROM Accounts WHERE CustomerID=" + customer.getPrimaryKey());
+    List<Map<String, Object>> entries = this.dbase.getEntries(sqlQuery);
     for (Map<String, Object> entry : entries) {
       // entity must be created with the primary key provided
       String primaryKey = entry.get("Id").toString();
       Account account = new Account(primaryKey, entry.get("AccountTypeID").toString(), Double.parseDouble(entry.get("Balance").toString()));
-      // data fields are saved using field setters
-      // ...
-      // add entity to the collection
-      output.put(entry.get("Id").toString(), account);
+      output.add(account);
     }
     return output;
   }
 
 
-  public HashMap<String, Customer> getCustomersAccounts() {
-    // TODO: create central mapping for the table names
 
-    HashMap<String, Customer> customers = new HashMap<>();
-    HashMap<String, Customer> tbCustomer = this.getCustomers();
-    HashMap<String, Account> tbAccounts = this.getAccounts();
-
-    return customers;
-  }
 
 
   /**
