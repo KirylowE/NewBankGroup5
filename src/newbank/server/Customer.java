@@ -9,7 +9,6 @@ public class Customer {
   private String primaryKey;
   private String firstName;
   private String lastName;
-  private String userName;
 
   public Customer(String primaryKey) {
     this.accounts = new ArrayList<>();
@@ -37,20 +36,6 @@ public class Customer {
     this.lastName = lastName;
   }
 
-  public String getFullName() {
-    if (this.firstName != null && this.lastName != null) {
-      return this.firstName + " " + this.lastName;
-    }
-    return null;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
 
   public String accountsToString() {
     String s = "";
