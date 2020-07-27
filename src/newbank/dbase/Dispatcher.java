@@ -69,13 +69,13 @@ public final class Dispatcher {
     SqlQuery usernameQuery = new SqlQuery("SELECT * FROM Customer WHERE UserName='" + userNameEntered + "';");
     Map<String, Object> entry = this.dbase.getEntryByProperty(usernameQuery);
     if (entry != null) {
-      // entity must be created with the primary key provided
+      // entity must be created with the primary key  and user name provided
       String primaryKey = entry.get("Id").toString();
-      Customer customer = new Customer(primaryKey);
+      String userName = entry.get("UserName").toString();
+      Customer customer = new Customer(primaryKey, userName);
       // data fields are saved using field setters
       customer.setFirstName(entry.get("FirstName").toString());
       customer.setLastName(entry.get("LastName").toString());
-      customer.setUserName(entry.get("UserName").toString());
       return customer;
     }
     return null;
@@ -88,13 +88,13 @@ public final class Dispatcher {
     List<Map<String, Object>> entries = this.dbase.getEntries("Customer");
 
     for (Map<String, Object> entry : entries) {
-      // entity must be created with the primary key provided
+      // entity must be created with the primary key  and user name provided
       String primaryKey = entry.get("Id").toString();
-      Customer customer = new Customer(primaryKey);
+      String userName = entry.get("UserName").toString();
+      Customer customer = new Customer(primaryKey, userName);
       // data fields are saved using field setters
       customer.setFirstName(entry.get("FirstName").toString());
       customer.setLastName(entry.get("LastName").toString());
-      customer.setUserName(entry.get("UserName").toString());
       // add customer object to the collection
       output.put(entry.get("UserName").toString(), customer);
     }

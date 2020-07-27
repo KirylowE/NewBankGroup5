@@ -11,14 +11,19 @@ public class Customer {
   private String lastName;
   private String userName;
 
-  public Customer(String primaryKey) {
+  public Customer(String primaryKey, String userName) {
     this.accounts = new ArrayList<>();
     this.primaryKey = primaryKey;
+    this.userName = userName;
   }
 
-  // setter is disabled for the primary key, it must be set during object creation!
+  // setters are disabled for the primary key and user name, these must be set during object creation!
   public String getPrimaryKey() {
     return primaryKey;
+  }
+
+  public String getUserName() {
+    return userName;
   }
 
   public String getFirstName() {
@@ -42,14 +47,6 @@ public class Customer {
       return this.firstName + " " + this.lastName;
     }
     return null;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
   }
 
   public String accountsToString() {

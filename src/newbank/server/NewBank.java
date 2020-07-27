@@ -58,24 +58,24 @@ public class NewBank {
 
   	// TODO: Add surnames or change to random names altogether
 
-		Customer bhagy = new Customer("1");
+		Customer bhagy = new Customer("1", "Bhagy");
 		bhagy.addAccount(new Account("Main", 1000.0));
 		customers.put("Bhagy", bhagy);
 
-		Customer christina = new Customer("2");
+		Customer christina = new Customer("2", "Christina");
 		christina.addAccount(new Account("Savings", 1500.0));
 		customers.put("Christina", christina);
 
-		Customer john = new Customer("3");
+		Customer john = new Customer("3", "John");
 		john.addAccount(new Account("Checking1", 250.0));
 		john.addAccount(new Account("Checking2", 350.0));
 		customers.put("John", john);
 
-		Customer isabel = new Customer("4");
+		Customer isabel = new Customer("4", "Isabel");
 		isabel.addAccount(new Account(" Balance", 750.0));
 		customers.put("Isabel", isabel);
 
-		Customer anna = new Customer("5");
+		Customer anna = new Customer("5", "Anna");
 		anna.addAccount(new Account("Checking", 1250.0));
 		customers.put("Anna", anna);
 	}
