@@ -36,12 +36,12 @@ public class NewBankClientHandler extends Thread{
 				String password = in.readLine();
 				out.println("Checking Details...");
 				// authenticate user and get customer ID token from bank for use in subsequent requests
-				CustomerID customer = bank.checkLogInDetails(userName, password);
+				CustomerID customerID = bank.checkLogInDetails(userName, password);
 				// if the user is authenticated then get requests from the user and process them
-				if (customer != null) {
-					Customer cs = bank.initLoggedCustomer(customer.getKey());
+				if (customerID != null) {
+					Customer cs = bank.initLoggedCustomer(customerID.getKey());
 					// server logging
-					Logger.getLogger(this.className).log(Level.INFO, customer.getKey() + " user logged in success.");
+					Logger.getLogger(this.className).log(Level.INFO, customerID.getKey() + " user logged in success.");
 					// client messages
 					out.println("\nLog In Successful.");
 					out.println("Hello " + cs.getFirstName() + ". Please select option.\n");
@@ -53,8 +53,8 @@ public class NewBankClientHandler extends Thread{
 							out.println(responce);
 							break;
 						}
-						System.out.println("Request from " + cs.getFirstName() + " (" + customer.getKey() + ")");
-						String responce = bank.processRequest(customer, request);
+						System.out.println("Request from " + cs.getFirstName() + " (" + customerID.getKey() + ")");
+						String responce = bank.processRequest(customerID, request);
 						out.println(responce);
 					}
 				} else {
