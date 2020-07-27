@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class NewBankClientHandler extends Thread{
+public class NewBankClientHandler extends Thread {
 
 	private NewBank bank;
 	private BufferedReader in;
@@ -22,64 +22,70 @@ public class NewBankClientHandler extends Thread{
 	}
 
 	public void run() {
-		// keep getting requests from the client and processing them
-		// add a limit count
-		int limit = 3;
-
-		try {
-			while(limit > 0){
-				// ask for user name
-				out.println("\nEnter Username");
-				String userName = in.readLine();
-				// ask for password
-				out.println("Enter Password");
-				String password = in.readLine();
-				out.println("Checking Details...");
-				// authenticate user and get customer object from bank for use in subsequent requests
-				Customer customer = bank.checkLogInDetails(userName, password);
-				// if the user is authenticated then get requests from the user and process them
-				if (customer != null) {
-				customer.setAccounts();
-					// server logging
-					Logger.getLogger(this.className).log(Level.INFO, customer.getUserName() + " user logged in success.");
-					// client messages
-					out.println("\nLog In Successful.");
-					out.println("Hello " + customer.getFirstName() + ". Please select option.\n");
-					while (true) {
-						mainMenu();
-						String request = in.readLine();
-						if (request.equals("EXIT")) {
-							String responce = "Exiting";
-							out.println(responce);
-							break;
-						}
-						System.out.println("Request from " + customer.getFirstName() + " (" + customer.getUserName() + ")");
-						String responce = this.processRequest(request);
-						out.println(responce);
-					}
-				} else {
-					String one = limit == 1 ? "" : "s";
-					// client messages
-					out.println("Incorrect username or password.");
-					out.println(limit + " more attempt" + one + " before account is locked.");
-					limit--;
-				}
-			}
-			out.println("Maximum login attempts reached. Please contact customer service.");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				in.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				Thread.currentThread().interrupt();
-			}
-		}
+		this.launch();
 	}
+
+	/**
+	 * starts the login sequence. displays main menu on successful login.
+	 */
+  public void launch() {
+    // keep getting requests from the client and processing them
+    // add a limit count
+    int limit = 3;
+
+    try {
+      while (limit >= 0) {
+        // ask for user name
+        out.println("\nEnter Username");
+        String userName = in.readLine();
+        // ask for password
+        out.println("Enter Password");
+        String password = in.readLine();
+        out.println("Checking Details...");
+        // authenticate user and get customer object from bank for use in subsequent requests
+        Customer customer = bank.checkLogInDetails(userName, password);
+        // if the user is authenticated then get requests from the user and process them
+        if (customer != null) {
+          customer.setAccounts();
+          // server logging
+          Logger.getLogger(this.className).log(Level.INFO, customer.getUserName() + " user logged in success.");
+          // client messages
+          out.println("\nLog In Successful.");
+          out.println("Hello " + customer.getFirstName() + ". Please select option.\n");
+          while (true) {
+            mainMenu();
+            String request = in.readLine();
+            if (request.equals("EXIT")) {
+              String responce = "Exiting";
+              out.println(responce);
+              break;
+            }
+            System.out.println("Request from " + customer.getFirstName() + " (" + customer.getUserName() + ")");
+            String responce = this.processRequest(request);
+            out.println(responce);
+          }
+        } else {
+          String one = limit == 1 ? "" : "s";
+          // client messages
+          out.println("Incorrect username or password.");
+          out.println(limit + " more attempt" + one + " before account is locked.");
+          limit--;
+        }
+      }
+      out.println("Maximum login attempts reached. Please contact customer service.");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        in.close();
+        out.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
 
 	// commands from the customer are processed in this method
 	public synchronized String processRequest(String request) {
@@ -177,8 +183,13 @@ public class NewBankClientHandler extends Thread{
 			}
 
 			case "8": {
-				// EXIT
-				out.println("Exiting the app.");
+				// LOG OUT
+				// Client message
+				out.println(this.bank.customer.getUserName() + " logged out.");
+				// Server message
+				Logger.getLogger(this.className).log(Level.INFO, this.bank.customer.getUserName() + " user logged out.");
+				// call the action
+				this.launch();
 				break;
 			}
 
@@ -199,7 +210,7 @@ public class NewBankClientHandler extends Thread{
 		out.println("5. MOVE");
 		out.println("6. PAY");
 		out.println("7. MICROLOAN");
-		out.println("8. EXIT");
+		out.println("8. LOG OUT");
 		out.println("Please enter an option (1 - 8):");
 	}
 }
