@@ -63,6 +63,24 @@ public final class Dispatcher {
     return this.dbase.checkConnection() ? "OK" : "Failed";
   }
 
+
+  public Customer getCustomerByUserName(String userNameEntered) {
+    // TODO: create central mapping for the table names
+    SqlQuery usernameQuery = new SqlQuery("SELECT * FROM Customer WHERE UserName='" + userNameEntered + "';");
+    Map<String, Object> entry = this.dbase.getEntryByProperty(usernameQuery);
+    if (entry != null) {
+      // entity must be created with the primary key provided
+      String primaryKey = entry.get("Id").toString();
+      Customer customer = new Customer(primaryKey);
+      // data fields are saved using field setters
+      customer.setFirstName(entry.get("FirstName").toString());
+      customer.setLastName(entry.get("LastName").toString());
+      customer.setUserName(entry.get("UserName").toString());
+      return customer;
+    }
+    return null;
+  }
+
   public HashMap<String, Customer> getCustomers() {
     // TODO: create central mapping for the table names
 
@@ -76,8 +94,9 @@ public final class Dispatcher {
       // data fields are saved using field setters
       customer.setFirstName(entry.get("FirstName").toString());
       customer.setLastName(entry.get("LastName").toString());
+      customer.setUserName(entry.get("UserName").toString());
       // add customer object to the collection
-      output.put(entry.get("FirstName").toString(), customer);
+      output.put(entry.get("UserName").toString(), customer);
     }
     return output;
   }

@@ -6,12 +6,10 @@ public class Customer {
 
   private ArrayList<Account> accounts;
 
-  // unique id
   private String primaryKey;
-  // `Jennifer`
   private String firstName;
-  // `Moss`
   private String lastName;
+  private String userName;
 
   public Customer(String primaryKey) {
     this.accounts = new ArrayList<>();
@@ -39,7 +37,6 @@ public class Customer {
     this.lastName = lastName;
   }
 
-  // `Jennifer Moss`
   public String getFullName() {
     if (this.firstName != null && this.lastName != null) {
       return this.firstName + " " + this.lastName;
@@ -47,14 +44,13 @@ public class Customer {
     return null;
   }
 
-  // `Jennifer.Moss`
   public String getUserName() {
-    if (this.firstName != null && this.lastName != null) {
-      return this.firstName + "." + this.lastName;
-    }
-    return null;
+    return userName;
   }
 
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
   public String accountsToString() {
     String s = "";

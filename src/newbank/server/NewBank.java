@@ -5,12 +5,17 @@ import newbank.dbase.EnvironmentVariable;
 
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NewBank {
 
   private static final NewBank bank = new NewBank();
 
+  private final String className = NewBankClientHandler.class.getName();
   private HashMap<String, Customer> customers;
+  private Dispatcher dispatcher;
+
 
   /**
    * Constructor uses a distinction between development and production mode.
@@ -30,9 +35,10 @@ public class NewBank {
       // Production mode that uses the database
       System.out.println("New Bank is running in Production mode, database is used.");
       // Start the dispatcher before running database operations
-      Dispatcher dispatcher = Dispatcher.getInstance();
+      this.dispatcher = Dispatcher.getInstance();
       // get the customers from database, start an action through the dispatcher object.
-      customers = dispatcher.getCustomers();
+      // this is server-side, the customers list can be safely enumerated
+      customers = this.dispatcher.getCustomers();
     }
   }
 
@@ -44,24 +50,27 @@ public class NewBank {
 
   }
 
-	
+  public Customer getCustomerByUserName(String userName) {
+    return customers.get(userName);
+  }
+
 	private void addTestData() {
 
   	// TODO: Add surnames or change to random names altogether
-		
+
 		Customer bhagy = new Customer("1");
 		bhagy.addAccount(new Account("Main", 1000.0));
 		customers.put("Bhagy", bhagy);
-		
+
 		Customer christina = new Customer("2");
 		christina.addAccount(new Account("Savings", 1500.0));
 		customers.put("Christina", christina);
-	
+
 		Customer john = new Customer("3");
 		john.addAccount(new Account("Checking1", 250.0));
 		john.addAccount(new Account("Checking2", 350.0));
 		customers.put("John", john);
-		
+
 		Customer isabel = new Customer("4");
 		isabel.addAccount(new Account(" Balance", 750.0));
 		customers.put("Isabel", isabel);
@@ -70,17 +79,22 @@ public class NewBank {
 		anna.addAccount(new Account("Checking", 1250.0));
 		customers.put("Anna", anna);
 	}
-	
+
 	public static NewBank getBank() {
 		return bank;
 	}
-	
-	public synchronized CustomerID checkLogInDetails(String userName, String password) {
-		if(customers.containsKey(userName)) {
-			return new CustomerID(userName);
-		}
-		return null;
-	}
+
+  public synchronized CustomerID checkLogInDetails(String userName, String password) {
+    // server logging
+    Logger.getLogger(this.className).log(Level.INFO, userName + " user attempted to log in.");
+    // get customer object
+    Customer customer = this.dispatcher.getCustomerByUserName(userName.trim());
+    if (customer != null) {
+      System.out.println(userName);
+      return new CustomerID(userName);
+    }
+    return null;
+  }
 
 	// commands from the NewBank customer are processed in this method
 	public synchronized String processRequest(CustomerID customer, String request) {
@@ -88,7 +102,7 @@ public class NewBank {
 			switch(request){
 
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer)+" ";
-          
+
       case "DEPOSIT" :
         Scanner in= new Scanner(System.in);
         System.out.println("Please, select the account to deposit money: ");
@@ -99,7 +113,7 @@ public class NewBank {
         	return "FAIL";
         }
         return  (customers.get(customer.getKey())).addingMoneyToBalance(type,amount);
-          
+
       case "WITHDRAW":
         Scanner inToWithdraw= new Scanner(System.in);
         System.out.println("Please, select the account to withdraw money: ");
@@ -116,7 +130,7 @@ public class NewBank {
         System.out.println("Please enter new Account Name: ");
         String accountName = newAccount.next();
         return addNewAccount(customer, accountName);
-          
+
       case "MOVE":
         Scanner inToMove= new Scanner(System.in);
         System.out.println("Please, select the account FROM: ");
@@ -151,10 +165,9 @@ public class NewBank {
           customers.get(typeToTransfer2).addingMoneyToBalance(typeToTransfer3, amountToTransfer);
           return "SUCCESS";
         }
-          
-          
+
 			case "EXIT": break;
-          
+
 			default : return "FAIL";
 			}
 		}
