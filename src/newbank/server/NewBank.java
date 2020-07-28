@@ -81,6 +81,11 @@ public class NewBank {
 		return bank;
 	}
 
+	/**
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
 	public synchronized Customer checkLogInDetails(String userName, String password) {
 		// server logging
 		Logger.getLogger(this.className).log(Level.INFO, userName + " user attempted to log in.");
@@ -93,13 +98,16 @@ public class NewBank {
 		return null;
 	}
 
+	/**
+	 * showMyAccounts allows each customer to display her/his accounts
+	 * @return
+	 */
 	public String showMyAccounts() {
 		return this.customer.accountsToString();
 	}
 
 	/**
 	 * Method to add a new account for a customerID. Returns SUCCESS or FAIL
-	 * @param customerID
 	 * @param name
 	 * @return
 	 */

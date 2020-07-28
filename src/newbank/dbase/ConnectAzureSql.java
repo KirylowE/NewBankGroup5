@@ -16,6 +16,10 @@ public final class ConnectAzureSql implements IConnect {
   private final String className = IConnect.class.getName();
   private static IConnect SingleInstance;
 
+  /**
+   * @param dbUsername
+   * @param dbPassword
+   */
   // private constructor prevents from instantiating this class
   private ConnectAzureSql(String dbUsername, String dbPassword) {
     this.dbUsername = dbUsername;
@@ -76,12 +80,21 @@ public final class ConnectAzureSql implements IConnect {
     return null;
   }
 
+  /**
+   * @param tableName
+   * @param primaryKey
+   * @return
+   */
   public Map<String, Object> getEntryById(String tableName, String primaryKey) {
     SqlQuery sqlQuery = new SqlQuery(String.format("SELECT * FROM %s WHERE Id=%s;", tableName, primaryKey));
     return this.getEntryByProperty(sqlQuery);
   }
 
 
+  /**
+   * @param sqlQuery
+   * @return
+   */
   public Map<String, Object> getEntryByProperty(SqlQuery sqlQuery) {
     try {
       Statement statement = dbConnection.createStatement();
@@ -99,11 +112,17 @@ public final class ConnectAzureSql implements IConnect {
     return null;
   }
 
+  /**
+   * @param tableName
+   */
   public void createEntry(String tableName) {
     SqlQuery sqlQuery = new SqlQuery("INSERT INTO " + tableName + "(FirstName, LastName) VALUES ('Mark', 'Fieldman');");
     this.createEntry(sqlQuery);
   }
 
+  /**
+   * @param sqlQuery
+   */
   public void createEntry(SqlQuery sqlQuery) {
     try {
       Statement statement = dbConnection.createStatement();
@@ -113,11 +132,18 @@ public final class ConnectAzureSql implements IConnect {
     }
   }
 
+  /**
+   * @param tableName
+   * @param primaryKey
+   */
   public void updateEntry(String tableName, String primaryKey) {
     SqlQuery sqlQuery = new SqlQuery("UPDATE " + tableName + " SET FirstName='Sabina' WHERE Id=" + primaryKey + ";");
     this.updateEntry(sqlQuery);
   }
 
+  /**
+   * @param sqlQuery
+   */
   public void updateEntry(SqlQuery sqlQuery) {
     try {
       Statement statement = dbConnection.createStatement();

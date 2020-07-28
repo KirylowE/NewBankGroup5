@@ -87,6 +87,10 @@ public class NewBankClientHandler extends Thread {
     }
   }
 
+	/**
+	 * @param request
+	 * @return
+	 */
 	// commands from the customer are processed in this method
 	public synchronized String processRequest(String request) {
 		switch (request) {
