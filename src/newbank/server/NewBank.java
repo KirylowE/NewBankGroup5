@@ -94,7 +94,7 @@ public class NewBank {
 	}
 
 	public String showMyAccounts() {
-		return this.customer.accountsToString();
+		return this.customer.printAccounts();
 	}
 
 	/**

@@ -97,7 +97,8 @@ public class NewBankClientHandler extends Thread {
 			case "2": {
 				// DEPOSIT
 				try {
-					out.println("Please, select the account to deposit money: ");
+					out.println(this.bank.customer.printAccounts());
+					out.println("Please, select the account to deposit money by typing Account Name.");
 					String type = in.readLine();
 					out.println("Please, indicate the amount of money to deposit:  ");
 					double amount = Double.parseDouble(in.readLine());
@@ -113,7 +114,8 @@ public class NewBankClientHandler extends Thread {
 			case "3": {
 				// WITHDRAW
 				try {
-					out.println("Please, select the account to withdraw money: ");
+					out.println(this.bank.customer.printAccounts());
+					out.println("Please, select the account to withdraw money by typing Account Name.");
 					String typeToWithdraw = in.readLine();
 					out.println("Please, indicate the amount of money: ");
 					double amountToWithdraw = Double.parseDouble(in.readLine());
@@ -129,6 +131,7 @@ public class NewBankClientHandler extends Thread {
 			case "4": {
 				// NEWACCOUNT
 				try {
+					out.println(this.bank.customer.printAccounts());
 					out.println("Please enter new Account Name: ");
 					String accountName = in.readLine();
 					return this.bank.addNewAccount(accountName);
@@ -140,6 +143,7 @@ public class NewBankClientHandler extends Thread {
 			case "5": {
 				// MOVE
 				try {
+					out.println(this.bank.customer.printAccounts());
 					out.println("Please, select the account FROM: ");
 					String typeToMove1 = in.readLine();
 					out.println("Please, select the account TO: ");

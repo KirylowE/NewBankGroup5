@@ -70,6 +70,24 @@ public class Customer {
     this.dispatcher.updateAccounts(this);
   }
 
+  public String printAccounts() {
+    this.loadAccounts();
+    StringBuilder sb = new StringBuilder();
+    sb.append("\n\n");
+    sb.append(String.format("%1s", "Id"));
+    sb.append(String.format("%6s", "Name"));
+    sb.append(String.format("%20s", "Balance"));
+    sb.append("\n-----------------------------------\n");
+    for (Account acc : this.accounts) {
+      sb.append(String.format("%1s", acc.getPrimaryKey()));
+      sb.append(String.format("%6s", acc.getAccountName()));
+      sb.append(String.format("%20s", acc.getBalance()));
+      sb.append("\n");
+    }
+    sb.append("-----------------------------------\n");
+    return sb.toString();
+  }
+
   public String accountsToString() {
     String s = "";
     for (Account a : accounts) {
