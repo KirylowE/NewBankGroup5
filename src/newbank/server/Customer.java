@@ -22,6 +22,7 @@ public class Customer {
     this.userName = userName;
     // Start the dispatcher before running database operations
     this.dispatcher = Dispatcher.getInstance();
+    this.accounts = this.dispatcher.readAccounts(this);
   }
 
   // setters are disabled for the primary key and user name, these must be set during object creation!
@@ -56,12 +57,17 @@ public class Customer {
     return null;
   }
 
-  public void setAccounts() {
-    this.accounts = this.dispatcher.getCustomerAccounts(this);
-  }
-
   public List<Account> getAccounts() {
     return this.accounts;
+  }
+
+  public List<Account> loadAccounts() {
+    this.accounts = this.dispatcher.readAccounts(this);
+    return this.accounts;
+  }
+
+  public void updateAccounts() {
+    this.dispatcher.updateAccounts(this);
   }
 
   public String accountsToString() {
@@ -91,6 +97,8 @@ public class Customer {
         System.out.println(a.getAccountName());
       if (a.getAccountName().equals(typeAccount)) {
         a.addMoneyToBalance(amountToAdd);
+        // save accounts to database
+        this.dispatcher.updateAccounts(this);
         return "\nREQUEST ACCEPTED" + " - " + " DEPOSIT " + a.getAccountName() + ". NEW BALANCE = " + a.getBalance() + "\n";
       }
     }
@@ -106,6 +114,8 @@ public class Customer {
       if (a.getAccountName().equals(typeAccount)) {
         if (amountToSubtract < a.getBalance()) {
           a.subtractMoneyToBalance(amountToSubtract);
+          // save accounts to database
+          this.dispatcher.updateAccounts(this);
           return "REQUEST ACCEPTED " + " - " + " WITHDRAW " + a.getAccountName();
         } else return "REQUEST DENIED " + " - " + " Not enough money for bank account " + a.getAccountName() + " withdrawal";
       }
@@ -136,6 +146,8 @@ public class Customer {
       if (a.getAccountName().equalsIgnoreCase(nameAccountSendsMoney)) {
         if (amountToTransfer <= a.getBalance()) {
           a.subtractMoneyToBalance(amountToTransfer);
+          // save accounts to database
+          this.dispatcher.updateAccounts(this);
           return true;
         }
       }

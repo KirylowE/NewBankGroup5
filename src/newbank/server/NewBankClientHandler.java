@@ -46,7 +46,6 @@ public class NewBankClientHandler extends Thread {
         Customer customer = bank.checkLogInDetails(userName, password);
         // if the user is authenticated then get requests from the user and process them
         if (customer != null) {
-          customer.setAccounts();
           // server logging
           Logger.getLogger(this.className).log(Level.INFO, customer.getUserName() + " user logged in success.");
           // client messages

@@ -13,6 +13,10 @@ public class Account {
 		this.openingBalance = openingBalance;
 	}
 
+	public String getPrimaryKey() {
+		return primaryKey;
+	}
+
 	// temporary second constructor to create account with a primary key without disturbing existing references
 	public Account(String primaryKey, String accountName, double openingBalance){
 		this.primaryKey = primaryKey;
