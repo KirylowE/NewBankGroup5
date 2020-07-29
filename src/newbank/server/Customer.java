@@ -16,6 +16,11 @@ public class Customer {
 
   private Dispatcher dispatcher;
 
+  /**
+   * @param primaryKey
+   * @param userName
+   */
+
   public Customer(String primaryKey, String userName) {
     this.accounts = new ArrayList<>();
     this.primaryKey = primaryKey;
@@ -63,7 +68,7 @@ public class Customer {
   public List<Account> getAccounts() {
     return this.accounts;
   }
-
+  
   public String accountsToString() {
     String s = "";
     for (Account a : accounts) {
@@ -72,17 +77,16 @@ public class Customer {
     return s;
   }
 
-  //----
-  // ADD ACCOUNT
-  //----
-
   public void addAccount(Account account) {
     accounts.add(account);
   }
 
-  //----
-  // ADD MONEY
-  //----
+  /**
+   * addingMoneyToBalance allows each customer to request to add money to one of his/her acconts
+   * @param typeAccount
+   * @param amountToAdd
+   * @return
+   */
 
   public String addingMoneyToBalance(String typeAccount, double amountToAdd) {
     System.out.println("Adding " + amountToAdd + " to account " + typeAccount + " for user " + this.getUserName());
@@ -97,9 +101,13 @@ public class Customer {
     return "REQUEST DENIED" + " - " + " DEPOSIT " + typeAccount;
   }
 
-  //----
-  // WITHDRAW MONEY
-  //----
+
+  /**
+   * withdrawingMoneyToBalance allows each customer to request to withdraw money from one of his/her acconts
+   * @param typeAccount
+   * @param amountToSubtract
+   * @return
+   */
 
   public String withdrawingMoneyToBalance(String typeAccount, double amountToSubtract) {
     for (Account a : accounts) {
@@ -113,9 +121,12 @@ public class Customer {
     return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
   }
 
-  //----
-  //  NEW CUSTOMER ACCOUNT
-  //----
+
+  /**
+   * addNewCustomerAccount allows customers to add one account
+   * @param name
+   * @return
+   */
 
   public Boolean addNewCustomerAccount(String name) {
     Boolean accFound = false;
@@ -127,9 +138,15 @@ public class Customer {
     return accFound;
   }
 
-  //----
-  // PAY
-  //----
+
+  /**
+   * pay allows each customer to give money to another customer
+   * @param nameAccountSendsMoney
+   * @param ownerAccountNameReceivesMoney
+   * @param accountNameReceivesMoney
+   * @param amountToTransfer
+   * @return
+   */
 
   public Boolean pay(String nameAccountSendsMoney, String ownerAccountNameReceivesMoney, String accountNameReceivesMoney, double amountToTransfer) {
     for (Account a : accounts) {
@@ -144,9 +161,14 @@ public class Customer {
     return false; // if the flow does not enter in the for
   }
 
-  //----
-  // MOVE
-  //----
+
+  /**
+   * move allows each customer to transfer money from one account to another one
+   * @param accountFrom
+   * @param accountTo
+   * @param amountToMove
+   * @return
+   */
 
   public String move(String accountFrom, String accountTo, double amountToMove) {
 

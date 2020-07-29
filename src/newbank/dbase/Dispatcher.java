@@ -102,6 +102,10 @@ public final class Dispatcher {
     return output;
   }
 
+  /**
+   * @param customer
+   * @return
+   */
   public List<Account> getCustomerAccounts(Customer customer) {
     List<Account> output = new ArrayList<>();
     SqlQuery sqlQuery = new SqlQuery("SELECT * FROM Accounts WHERE CustomerID=" + customer.getPrimaryKey());
