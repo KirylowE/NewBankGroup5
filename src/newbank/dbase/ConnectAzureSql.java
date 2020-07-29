@@ -17,6 +17,7 @@ public final class ConnectAzureSql implements IConnect {
   private static IConnect SingleInstance;
 
   /**
+   * Passing in the parameters (username and password) for the database
    * @param dbUsername
    * @param dbPassword
    */
@@ -26,6 +27,11 @@ public final class ConnectAzureSql implements IConnect {
     this.dbPassword = dbPassword;
   }
 
+  /**
+   * @param dbUsername
+   * @param dbPassword
+   * @return
+   */
   // single entry point to create only one instance of this class
   public static IConnect getInstance(String dbUsername, String dbPassword) {
     if (SingleInstance == null) {
@@ -34,6 +40,10 @@ public final class ConnectAzureSql implements IConnect {
     return SingleInstance;
   }
 
+
+  /**
+   * creation of the database connection
+   */
   public void createConnection() {
     try {
       String host = "jdbc:sqlserver://new-bank.database.windows.net:1433;database=newbank;";
@@ -55,11 +65,21 @@ public final class ConnectAzureSql implements IConnect {
     return false;
   }
 
+  /**
+   * Query of the selected table
+   * @param tableName
+   * @return
+   */
   public List<Map<String, Object>> getEntries(String tableName) {
     SqlQuery sqlQuery = new SqlQuery("SELECT * FROM " + tableName + ";");
     return this.getEntries(sqlQuery);
   }
 
+  /**
+   * A query is given and is executed by the database. Then, there's an output of results.
+   * @param sqlQuery
+   * @return
+   */
   public List<Map<String, Object>> getEntries(SqlQuery sqlQuery) {
     try {
       Statement statement = dbConnection.createStatement();
