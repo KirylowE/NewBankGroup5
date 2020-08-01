@@ -135,6 +135,8 @@ public class NewBankClientHandler extends Thread {
 			case "4": {
 				// NEWACCOUNT
 				try {
+					String status = "FAIL";
+					Boolean accountFound;
 					out.println(this.bank.customer.printAccounts());
 					out.println("Please enter new Account Name: ");
 					String accountName = in.readLine();
