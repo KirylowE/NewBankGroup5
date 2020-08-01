@@ -81,6 +81,11 @@ public class NewBank {
 		return bank;
 	}
 
+	/**
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
 	public synchronized Customer checkLogInDetails(String userName, String password) {
 		// server logging
 		Logger.getLogger(this.className).log(Level.INFO, userName + " user attempted to log in.");
@@ -93,8 +98,40 @@ public class NewBank {
 		return null;
 	}
 
+	/**
+	 * showMyAccounts allows each customer to display her/his accounts
+	 * @return
+	 */
 	public String showMyAccounts() {
 		return this.customer.accountsToString();
 	}
+
+	/**
+	 * Method to add a new account for a customerID. Returns SUCCESS or FAIL
+	 * @param name
+	 * @return
+	 */
+	public String addNewAccount(String name) {
+		String status = "FAIL";
+		Boolean accountFound = false;
+		Scanner openingBal = new Scanner(System.in);
+
+		accountFound = this.customer.addNewCustomerAccount(name);
+		if (!accountFound) {
+			System.out.println("Please enter Opening Balance: ");
+			Double openingBalance = openingBal.nextDouble();
+			while(openingBalance < 0){
+				System.out.println("Please enter a positive amount.");
+				openingBalance = openingBal.nextDouble();
+			}
+			this.customer.addAccount(new Account(name, openingBalance));
+			status = "SUCCESS";
+		}
+		else{
+			System.out.println("Account already exists.");
+		}
+		return status;
+	}
+
 }
 
