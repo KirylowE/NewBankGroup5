@@ -24,12 +24,9 @@ public class AccountList {
 
   /**
    * Loads the account list from database and updates the local this.account field
-   *
-   * @return list of accounts
    */
-  public List<Account> loadAccounts() {
+  public void loadAccounts() {
     this.accounts = this.dispatcher.readAccounts(this.customer);
-    return this.accounts;
   }
 
   /**
