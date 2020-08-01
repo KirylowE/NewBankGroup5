@@ -172,6 +172,4 @@ public final class ConnectAzureSql implements IConnect {
       Logger.getLogger(this.className).log(Level.SEVERE, "Unable to update entry.", e);
     }
   }
-
-
 }

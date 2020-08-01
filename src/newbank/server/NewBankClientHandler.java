@@ -138,7 +138,21 @@ public class NewBankClientHandler extends Thread {
 					out.println(this.bank.customer.printAccounts());
 					out.println("Please enter new Account Name: ");
 					String accountName = in.readLine();
-					return this.bank.addNewAccount(accountName);
+					accountFound = this.bank.customer.addNewCustomerAccount(accountName);
+					if (!accountFound) {
+						out.println("Please enter Opening Balance: ");
+						Double openingBalance = Double.parseDouble(in.readLine());
+						while(openingBalance < 0){
+							out.println("Please enter a positive amount.");
+							openingBalance = Double.parseDouble(in.readLine());
+						}
+						this.bank.customer.addAccount(new Account(accountName, openingBalance));
+						status = "SUCCESS";
+					}
+					else{
+						out.println("Account already exists.");
+					}
+					return status;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

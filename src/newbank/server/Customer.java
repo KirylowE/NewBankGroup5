@@ -4,6 +4,7 @@ import newbank.dbase.Dispatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Customer {
 
@@ -151,11 +152,11 @@ public class Customer {
 
 
   /**
-   * addNewCustomerAccount allows customers to add one account
-   * @param name
-   * @return
+   * Method to add a new account for a customerID. Returns True or False.
+   * @param name - Account Name
+   * @return - returns a boolean value true if account already exists.
    */
-
+  
   public Boolean addNewCustomerAccount(String name) {
     Boolean accFound = false;
     for (Account acc : accounts) {
