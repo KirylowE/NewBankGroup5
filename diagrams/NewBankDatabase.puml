@@ -41,7 +41,7 @@
        entity "AccountTypes" {
         PK(Id)
         --
-        *FK(AccountType) : VARCHAR
+        *(AccountType) : VARCHAR
         *InterestRate : INTEGER
        }
 
