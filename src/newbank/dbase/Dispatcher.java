@@ -107,14 +107,28 @@ public final class Dispatcher {
    * @return
    */
   public List<Account> readAccounts(Customer customer) {
+    /*
+     *  SELECT Accounts.Id, Accounts.CustomerID, Accounts.Balance, AccountTypes.AccountType
+     *  FROM Accounts
+     *  INNER JOIN AccountTypes ON AccountTypes.Id = Accounts.AccountTypeID
+     *  WHERE CustomerID = 1;
+     */
     List<Account> output = new ArrayList<>();
-    SqlQuery sqlQuery = new SqlQuery("SELECT * FROM Accounts WHERE CustomerID=" + customer.getPrimaryKey());
+    SqlQuery sqlQuery = new SqlQuery(
+        "SELECT Accounts.Id, Accounts.CustomerID, Accounts.Balance, AccountTypes.AccountType " +
+            "FROM Accounts " +
+            "INNER JOIN AccountTypes ON AccountTypes.Id = Accounts.AccountTypeID " +
+            "WHERE CustomerID=" + customer.getPrimaryKey() + ";");
     List<Map<String, Object>> entries = this.dbase.getEntries(sqlQuery);
+    int index = 1;
     for (Map<String, Object> entry : entries) {
       // entity must be created with the primary key provided
       String primaryKey = entry.get("Id").toString();
-      Account account = new Account(primaryKey, entry.get("AccountTypeID").toString(), Double.parseDouble(entry.get("Balance").toString()));
+      double balance = Double.parseDouble(entry.get("Balance").toString());
+      String accountType = entry.get("AccountType").toString();
+      Account account = new Account(String.valueOf(index), primaryKey, accountType, balance);
       output.add(account);
+      index++;
     }
     return output;
   }
@@ -126,9 +140,6 @@ public final class Dispatcher {
       this.dbase.updateEntry("Accounts", "Balance", balance, primaryKey);
     }
   }
-
-
-
 
 
   /**

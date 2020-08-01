@@ -4,7 +4,6 @@ import newbank.dbase.Dispatcher;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Customer {
 
@@ -79,18 +78,20 @@ public class Customer {
   public String printAccounts() {
     this.loadAccounts();
     StringBuilder sb = new StringBuilder();
-    sb.append("\n\n");
-    sb.append(String.format("%1s", "Id"));
+    sb.append("\n\nNum");
+    sb.append(" ".repeat(2));
     sb.append(String.format("%6s", "Name"));
-    sb.append(String.format("%20s", "Balance"));
-    sb.append("\n-----------------------------------\n");
+    sb.append(String.format("%28s", "Balance"));
+    sb.append("\n-------------------------------------------\n");
     for (Account acc : this.accounts) {
-      sb.append(String.format("%1s", acc.getPrimaryKey()));
-      sb.append(String.format("%6s", acc.getAccountName()));
-      sb.append(String.format("%20s", acc.getBalance()));
+      int index = Integer.parseInt(acc.getIndex());
+      String name = acc.getAccountName();
+      sb.append(index);
+      sb.append(" ".repeat(7 - acc.getIndex().length())).append(acc.getAccountName());
+      sb.append(" ".repeat(25 - name.length())).append(acc.getBalance());
       sb.append("\n");
     }
-    sb.append("-----------------------------------\n");
+    sb.append("------------------------------------------\n");
     return sb.toString();
   }
 
@@ -108,6 +109,7 @@ public class Customer {
 
   /**
    * addingMoneyToBalance allows each customer to request to add money to one of his/her acconts
+   *
    * @param typeAccount
    * @param amountToAdd
    * @return
@@ -116,8 +118,8 @@ public class Customer {
   public String addingMoneyToBalance(String typeAccount, double amountToAdd) {
     System.out.println("Adding " + amountToAdd + " to account " + typeAccount + " for user " + this.getUserName());
     for (Account a : this.accounts) {
-        System.out.println(a);
-        System.out.println(a.getAccountName());
+      System.out.println(a);
+      System.out.println(a.getAccountName());
       if (a.getAccountName().equals(typeAccount)) {
         a.addMoneyToBalance(amountToAdd);
         // save accounts to database
@@ -131,6 +133,7 @@ public class Customer {
 
   /**
    * withdrawingMoneyToBalance allows each customer to request to withdraw money from one of his/her acconts
+   *
    * @param typeAccount
    * @param amountToSubtract
    * @return
@@ -153,10 +156,11 @@ public class Customer {
 
   /**
    * Method to add a new account for a customerID. Returns True or False.
+   *
    * @param name - Account Name
    * @return - returns a boolean value true if account already exists.
    */
-  
+
   public Boolean addNewCustomerAccount(String name) {
     Boolean accFound = false;
     for (Account acc : accounts) {
@@ -170,6 +174,7 @@ public class Customer {
 
   /**
    * pay allows each customer to give money to another customer
+   *
    * @param nameAccountSendsMoney
    * @param ownerAccountNameReceivesMoney
    * @param accountNameReceivesMoney
@@ -195,6 +200,7 @@ public class Customer {
 
   /**
    * move allows each customer to transfer money from one account to another one
+   *
    * @param accountFrom
    * @param accountTo
    * @param amountToMove
