@@ -4,7 +4,6 @@ import java.util.List;
 import newbank.dbase.Dispatcher;
 
 
-
 public class AccountList {
 
   private Customer customer;
