@@ -96,33 +96,5 @@ public class NewBank {
 	public String showMyAccounts() {
 		return this.customer.accountsToString();
 	}
-
-	/**
-	 * Method to add a new account for a customerID. Returns SUCCESS or FAIL
-	 * @param customerID
-	 * @param name
-	 * @return
-	 */
-	public String addNewAccount(String name) {
-		String status = "FAIL";
-		Boolean accountFound = false;
-		Scanner openingBal = new Scanner(System.in);
-
-		accountFound = this.customer.addNewCustomerAccount(name);
-		if (!accountFound) {
-			System.out.println("Please enter Opening Balance: ");
-			Double openingBalance = openingBal.nextDouble();
-			while(openingBalance < 0){
-				System.out.println("Please enter a positive amount.");
-				openingBalance = openingBal.nextDouble();
-			}
-			this.customer.addAccount(new Account(name, openingBalance));
-			status = "SUCCESS";
-		}
-		else{
-			System.out.println("Account already exists.");
-		}
-		return status;
-	}
 }
 

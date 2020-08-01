@@ -4,6 +4,7 @@ import newbank.dbase.Dispatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Customer {
 
@@ -113,9 +114,11 @@ public class Customer {
     return "REQUEST DENIED" + " - " + " WITHDRAW " + typeAccount;
   }
 
-  //----
-  //  NEW CUSTOMER ACCOUNT
-  //----
+  /**
+   * Method to add a new account for a customerID. Returns True or False.
+   * @param name - Account Name
+   * @return - returns a boolean value true if account already exists.
+   */
 
   public Boolean addNewCustomerAccount(String name) {
     Boolean accFound = false;
