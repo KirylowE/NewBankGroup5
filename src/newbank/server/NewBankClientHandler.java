@@ -21,7 +21,17 @@ public class NewBankClientHandler extends Thread {
 		out = new PrintWriter(s.getOutputStream(), true);
 	}
 
+	/*
+	 */
+
+	private void startScreen() {
+		out.println("-----------------------------");
+		out.println("New Bank Terminal is running.");
+		out.println("-----------------------------");
+	}
+
 	public void run() {
+		startScreen();
 		this.launch();
 	}
 
