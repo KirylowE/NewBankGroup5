@@ -47,10 +47,12 @@ public class NewBankClientHandler extends Thread {
       while (limit >= 0) {
         // ask for user name
         out.println("\nEnter Username");
-        String userName = in.readLine();
+        // String userName = in.readLine();
+        String userName = "vip";
         // ask for password
         out.println("Enter Password");
-        String password = in.readLine();
+        // String password = in.readLine();
+        String password = " ";
         out.println("Checking Details...");
         // authenticate user and get customer object from bank for use in subsequent requests
         Customer customer = bank.checkLogInDetails(userName, password);
@@ -111,7 +113,7 @@ public class NewBankClientHandler extends Thread {
 			case "2": {
 				// DEPOSIT
 				try {
-					out.println(this.bank.customer.printAccounts());
+					out.println(this.bank.customer.accounts.printAccounts());
 					out.println("Please, select the account to deposit money by typing Account Name.");
 					String type = in.readLine();
 					out.println("Please, indicate the amount of money to deposit:  ");
@@ -128,7 +130,7 @@ public class NewBankClientHandler extends Thread {
 			case "3": {
 				// WITHDRAW
 				try {
-					out.println(this.bank.customer.printAccounts());
+					out.println(this.bank.customer.accounts.printAccounts());
 					out.println("Please, select the account to withdraw money by typing Account Name.");
 					String typeToWithdraw = in.readLine();
 					out.println("Please, indicate the amount of money: ");
@@ -147,18 +149,18 @@ public class NewBankClientHandler extends Thread {
 				try {
 					String status = "FAIL";
 					Boolean accountFound;
-					out.println(this.bank.customer.printAccounts());
+					out.println(this.bank.customer.accounts.printAccounts());
 					out.println("Please enter new Account Name: ");
 					String accountName = in.readLine();
 					accountFound = this.bank.customer.addNewCustomerAccount(accountName);
 					if (!accountFound) {
 						out.println("Please enter Opening Balance: ");
-						Double openingBalance = Double.parseDouble(in.readLine());
+						double openingBalance = Double.parseDouble(in.readLine());
 						while(openingBalance < 0){
 							out.println("Please enter a positive amount.");
 							openingBalance = Double.parseDouble(in.readLine());
 						}
-						this.bank.customer.addAccount(new Account(accountName, openingBalance));
+						this.bank.customer.accounts.addAccount(new Account(accountName, openingBalance));
 						status = "SUCCESS";
 					}
 					else{
@@ -173,7 +175,7 @@ public class NewBankClientHandler extends Thread {
 			case "5": {
 				// MOVE
 				try {
-					out.println(this.bank.customer.printAccounts());
+					out.println(this.bank.customer.accounts.printAccounts());
 					out.println("Please, select the account FROM: ");
 					String typeToMove1 = in.readLine();
 					out.println("Please, select the account TO: ");

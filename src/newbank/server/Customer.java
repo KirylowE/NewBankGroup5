@@ -2,12 +2,9 @@ package newbank.server;
 
 import newbank.dbase.Dispatcher;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Customer {
 
-  private List<Account> accounts;
+  public AccountList accounts;
 
   private String primaryKey;
   private String firstName;
@@ -22,12 +19,11 @@ public class Customer {
    */
 
   public Customer(String primaryKey, String userName) {
-    this.accounts = new ArrayList<>();
     this.primaryKey = primaryKey;
     this.userName = userName;
+    this.accounts = new AccountList(this);
     // Start the dispatcher before running database operations
     this.dispatcher = Dispatcher.getInstance();
-    this.accounts = this.dispatcher.readAccounts(this);
   }
 
   // setters are disabled for the primary key and user name, these must be set during object creation!
@@ -62,51 +58,6 @@ public class Customer {
     return null;
   }
 
-  public List<Account> getAccounts() {
-    return this.accounts;
-  }
-
-  public List<Account> loadAccounts() {
-    this.accounts = this.dispatcher.readAccounts(this);
-    return this.accounts;
-  }
-
-  public void updateAccounts() {
-    this.dispatcher.updateAccounts(this);
-  }
-
-  public String printAccounts() {
-    this.loadAccounts();
-    StringBuilder sb = new StringBuilder();
-    sb.append("\n\nNo");
-    sb.append(" ".repeat(3));
-    sb.append(String.format("%6s", "Name"));
-    sb.append(String.format("%28s", "Balance"));
-    sb.append("\n-------------------------------------------\n");
-    for (Account acc : this.accounts) {
-      int index = Integer.parseInt(acc.getIndex());
-      String name = acc.getAccountName();
-      sb.append(index);
-      sb.append(" ".repeat(7 - acc.getIndex().length())).append(acc.getAccountName());
-      sb.append(" ".repeat(25 - name.length())).append(acc.getBalance());
-      sb.append("\n");
-    }
-    sb.append("-------------------------------------------\n");
-    return sb.toString();
-  }
-
-  public String accountsToString() {
-    String s = "";
-    for (Account a : accounts) {
-      s += a.toString() + "\n";
-    }
-    return s;
-  }
-
-  public void addAccount(Account account) {
-    accounts.add(account);
-  }
-
   /**
    * addingMoneyToBalance allows each customer to request to add money to one of his/her acconts
    *
@@ -117,13 +68,13 @@ public class Customer {
 
   public String addingMoneyToBalance(String typeAccount, double amountToAdd) {
     System.out.println("Adding " + amountToAdd + " to account " + typeAccount + " for user " + this.getUserName());
-    for (Account a : this.accounts) {
+    for (Account a : this.accounts.getAccounts()) {
       System.out.println(a);
       System.out.println(a.getAccountName());
       if (a.getAccountName().equals(typeAccount)) {
         a.addMoneyToBalance(amountToAdd);
         // save accounts to database
-        this.dispatcher.updateAccounts(this);
+        this.accounts.updateAccounts();
         return "\nREQUEST ACCEPTED" + " - " + " DEPOSIT " + a.getAccountName() + ". NEW BALANCE = " + a.getBalance() + "\n";
       }
     }
@@ -140,12 +91,12 @@ public class Customer {
    */
 
   public String withdrawingMoneyToBalance(String typeAccount, double amountToSubtract) {
-    for (Account a : accounts) {
+    for (Account a : accounts.getAccounts()) {
       if (a.getAccountName().equals(typeAccount)) {
         if (amountToSubtract < a.getBalance()) {
           a.subtractMoneyToBalance(amountToSubtract);
           // save accounts to database
-          this.dispatcher.updateAccounts(this);
+          this.accounts.updateAccounts();
           return "REQUEST ACCEPTED " + " - " + " WITHDRAW " + a.getAccountName();
         } else return "REQUEST DENIED " + " - " + " Not enough money for bank account " + a.getAccountName() + " withdrawal";
       }
@@ -163,7 +114,7 @@ public class Customer {
 
   public Boolean addNewCustomerAccount(String name) {
     Boolean accFound = false;
-    for (Account acc : accounts) {
+    for (Account acc : accounts.getAccounts()) {
       if (acc.getAccountName().equals(name)) {
         accFound = true;
       }
@@ -183,12 +134,12 @@ public class Customer {
    */
 
   public Boolean pay(String nameAccountSendsMoney, String ownerAccountNameReceivesMoney, String accountNameReceivesMoney, double amountToTransfer) {
-    for (Account a : accounts) {
+    for (Account a : accounts.getAccounts()) {
       if (a.getAccountName().equalsIgnoreCase(nameAccountSendsMoney)) {
         if (amountToTransfer <= a.getBalance()) {
           a.subtractMoneyToBalance(amountToTransfer);
           // save accounts to database
-          this.dispatcher.updateAccounts(this);
+          this.accounts.updateAccounts();
           return true;
         }
       }
@@ -209,11 +160,11 @@ public class Customer {
 
   public String move(String accountFrom, String accountTo, double amountToMove) {
 
-    for (Account a : accounts) {
+    for (Account a : accounts.getAccounts()) {
       if (a.getAccountName().equals(accountFrom)) {
         if (amountToMove <= a.getBalance()) {
           a.subtractMoneyToBalance(amountToMove);
-          for (Account b : accounts) {
+          for (Account b : accounts.getAccounts()) {
             if (b.getAccountName().equals(accountTo)) {
               b.addMoneyToBalance(amountToMove);
               return "SUCCESS";

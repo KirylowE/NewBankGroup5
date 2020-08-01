@@ -134,7 +134,7 @@ public final class Dispatcher {
   }
 
   public void updateAccounts(Customer customer) {
-    for (Account account : customer.getAccounts()) {
+    for (Account account : customer.accounts.getAccounts()) {
       String balance = String.valueOf(account.getBalance());
       String primaryKey = account.getPrimaryKey();
       this.dbase.updateEntry("Accounts", "Balance", balance, primaryKey);
