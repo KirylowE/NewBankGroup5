@@ -78,8 +78,8 @@ public class Customer {
   public String printAccounts() {
     this.loadAccounts();
     StringBuilder sb = new StringBuilder();
-    sb.append("\n\nNum");
-    sb.append(" ".repeat(2));
+    sb.append("\n\nNo");
+    sb.append(" ".repeat(3));
     sb.append(String.format("%6s", "Name"));
     sb.append(String.format("%28s", "Balance"));
     sb.append("\n-------------------------------------------\n");
@@ -91,7 +91,7 @@ public class Customer {
       sb.append(" ".repeat(25 - name.length())).append(acc.getBalance());
       sb.append("\n");
     }
-    sb.append("------------------------------------------\n");
+    sb.append("-------------------------------------------\n");
     return sb.toString();
   }
 

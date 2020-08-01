@@ -29,8 +29,8 @@ public class Account {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\n\nNum");
-		sb.append(" ".repeat(2));
+		sb.append("\n\nNo");
+		sb.append(" ".repeat(3));
 		sb.append(String.format("%6s", "Name"));
 		sb.append(String.format("%28s", "Balance"));
 		sb.append("\n-------------------------------------------\n");
@@ -40,7 +40,7 @@ public class Account {
 			sb.append(" ".repeat(7 - this.getIndex().length())).append(this.getAccountName());
 			sb.append(" ".repeat(25 - name.length())).append(this.getBalance());
 			sb.append("\n");
-		sb.append("------------------------------------------\n");
+		sb.append("-------------------------------------------\n");
 		return sb.toString();
 	}
 
