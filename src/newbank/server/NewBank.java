@@ -103,7 +103,7 @@ public class NewBank {
 	 * @return
 	 */
 	public String showMyAccounts() {
-		return this.customer.accountsToString();
+		return this.customer.printAccounts();
 	}
 
 	/**

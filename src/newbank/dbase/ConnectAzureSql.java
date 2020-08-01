@@ -156,8 +156,8 @@ public final class ConnectAzureSql implements IConnect {
    * @param tableName
    * @param primaryKey
    */
-  public void updateEntry(String tableName, String primaryKey) {
-    SqlQuery sqlQuery = new SqlQuery("UPDATE " + tableName + " SET FirstName='Sabina' WHERE Id=" + primaryKey + ";");
+  public void updateEntry(String tableName, String fieldName, String fieldValue, String primaryKey) {
+    SqlQuery sqlQuery = new SqlQuery("UPDATE " + tableName + " SET " + fieldName + "='" + fieldValue + "' WHERE Id=" + primaryKey + ";");
     this.updateEntry(sqlQuery);
   }
 

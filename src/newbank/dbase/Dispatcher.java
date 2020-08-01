@@ -106,7 +106,7 @@ public final class Dispatcher {
    * @param customer
    * @return
    */
-  public List<Account> getCustomerAccounts(Customer customer) {
+  public List<Account> readAccounts(Customer customer) {
     List<Account> output = new ArrayList<>();
     SqlQuery sqlQuery = new SqlQuery("SELECT * FROM Accounts WHERE CustomerID=" + customer.getPrimaryKey());
     List<Map<String, Object>> entries = this.dbase.getEntries(sqlQuery);
@@ -117,6 +117,14 @@ public final class Dispatcher {
       output.add(account);
     }
     return output;
+  }
+
+  public void updateAccounts(Customer customer) {
+    for (Account account : customer.getAccounts()) {
+      String balance = String.valueOf(account.getBalance());
+      String primaryKey = account.getPrimaryKey();
+      this.dbase.updateEntry("Accounts", "Balance", balance, primaryKey);
+    }
   }
 
 
@@ -145,7 +153,6 @@ public final class Dispatcher {
     Map<String, Object> result = dispatcher.dbase.getEntryById("Customer", "2");
     System.out.println(result);
     System.out.println("-----------");
-    dispatcher.dbase.updateEntry("Customer", "2");
     dispatcher.dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE Id='2';"));
     Map<String, Object> updatedResult = dispatcher.dbase.getEntryById("Customer", "2");
     System.out.println(updatedResult);

@@ -24,7 +24,7 @@ public interface IConnect {
 
   void createEntry(SqlQuery sqlQuery);
 
-  void updateEntry(String tableName, String primaryKey);
+  void updateEntry(String tableName, String fieldName, String fieldValue, String primaryKey);
 
   void updateEntry(SqlQuery sqlQuery);
 

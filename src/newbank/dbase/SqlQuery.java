@@ -22,10 +22,17 @@ public class SqlQuery {
 
   public SqlQuery(String sqlQuery) {
     this.sqlQuery = sqlQuery;
+    this.logQuery();
   }
 
   @Override
   public String toString() {
     return sqlQuery;
   }
+
+  private void logQuery() {
+    System.out.println("SQL QUERY: " + sqlQuery);
+  }
+
 }
+
