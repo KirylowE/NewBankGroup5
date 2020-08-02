@@ -1,0 +1,28 @@
+@startuml
+
+(Elect to\nBorrow) as borrow
+(Elect to\nLend) as lend
+(Set\nRanges) as range
+(Select \nLender) as select
+(Propose\n Loan) as propose
+(Accept Loan\n Proposal) as accept
+(Loan is logged\nin Ledger) as loan
+
+User -> borrow
+borrow -> select
+(View Lender\nCatalogue) .-> select : extends
+User -> lend
+lend -> range : includes
+
+note right of range : Amount, Interest\nRate & Term \nprepared to Loan
+
+note "Lender is added to\n Lender Catalogue" as n1
+
+select .. n1
+n1 .. range
+
+select -> propose
+propose ..> accept
+accept <- Lender
+accept --> loan : includes
+@enduml

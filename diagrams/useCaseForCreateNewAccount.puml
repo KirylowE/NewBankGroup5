@@ -1,0 +1,18 @@
+@startuml
+:Customer:
+:NewBankSystem: as NBS
+
+(Create New A/C) as (Create)
+(Update Customer Record) as (Update)
+
+Customer -> (Login)
+
+(Login) -> (Choose from Menu)
+(Choose from Menu) -> (Create)
+
+(Create) --> NBS
+(NBS) --> (Update)
+(Update) --> (SUCCESS/FAIL) :Returns Confirmation to customer
+(SUCCESS/FAIL) -> (Choose from Menu) : Back to Menu
+
+@enduml

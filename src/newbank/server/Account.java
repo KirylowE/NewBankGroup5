@@ -2,6 +2,7 @@ package newbank.server;
 
 public class Account {
 
+	private String index;
 	private String primaryKey;
 
 	private String accountName;
@@ -13,25 +14,46 @@ public class Account {
 		this.openingBalance = openingBalance;
 	}
 
+	public String getPrimaryKey() {
+		return primaryKey;
+	}
+
 	// temporary second constructor to create account with a primary key without disturbing existing references
-	public Account(String primaryKey, String accountName, double openingBalance){
+	public Account(String index, String primaryKey, String accountName, double openingBalance){
+		this.index = index;
 		this.primaryKey = primaryKey;
 		this.accountName = accountName;
 		this.openingBalance = openingBalance;
 	}
 
 	public String toString() {
-		return (accountName + " : " + openingBalance); 
-		}
- 
-	
-	 public double addMoneyToBalance(double amountForBalance) {
-		 openingBalance=openingBalance + amountForBalance;
-		 return openingBalance;
-	 }
-	 
-	 public String getAccountName() {
-		 return accountName; 
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n\nNo");
+		sb.append(" ".repeat(3));
+		sb.append(String.format("%6s", "Name"));
+		sb.append(String.format("%28s", "Balance"));
+		sb.append("\n-------------------------------------------\n");
+			int index = Integer.parseInt(this.getIndex());
+			String name = this.getAccountName();
+			sb.append(index);
+			sb.append(" ".repeat(7 - this.getIndex().length())).append(this.getAccountName());
+			sb.append(" ".repeat(25 - name.length())).append(this.getBalance());
+			sb.append("\n");
+		sb.append("-------------------------------------------\n");
+		return sb.toString();
+	}
+
+	public double addMoneyToBalance(double amountForBalance) {
+		this.openingBalance = this.openingBalance + amountForBalance;
+		return this.openingBalance;
+	}
+
+	public String getIndex() {
+		return this.index;
+	}
+
+	public String getAccountName() {
+		 return this.accountName;
 	 } 
 	 
 	 public double getBalance() {
@@ -45,9 +67,9 @@ public class Account {
 		  openingBalance=openingBalance - amountForBalance;
 			 return openingBalance;
 	 }
-	  
-	  
-	
-	
+
+	public static void main(String[] args) {
+		System.out.println();
+	}
 	
 }
