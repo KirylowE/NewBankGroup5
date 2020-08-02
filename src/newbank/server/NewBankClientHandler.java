@@ -317,17 +317,17 @@ public class NewBankClientHandler extends Thread {
 	}
 
 	public void mainMenu() {
-		out.println("................................");
-		out.println(". Main Menu - select an option .");
-		out.println("................................");
-		out.println("  1   SHOW MY ACCOUNTS");
-		out.println("  2   DEPOSIT MONEY");
-		out.println("  3   WITHDRAW MONEY");
-		out.println("  4   NEW ACCOUNT");
-		out.println("  5   MOVE MONEY TO ANOTHER ACCOUNT");
-		out.println("  6   PAY SOMEONE");
-		out.println("  7   GET MICROLOAN");
-		out.println("  8   LOG OUT");
-		out.println("................................");
+		out.println(".............");
+		out.println(". Main Menu .");
+		out.println("..........................................");
+		out.println("  1   SHOW MY ACCOUNTS                   .");
+		out.println("  2   DEPOSIT MONEY                      .");
+		out.println("  3   WITHDRAW MONEY                     .");
+		out.println("  4   NEW ACCOUNT                        .");
+		out.println("  5   MOVE MONEY TO ANOTHER ACCOUNT      .");
+		out.println("  6   PAY SOMEONE                        .");
+		out.println("  7   GET MICROLOAN                      .");
+		out.println("  8   LOG OUT                            .");
+		out.println("..........................................");
 	}
 }
