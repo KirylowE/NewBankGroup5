@@ -121,7 +121,7 @@ public class NewBankClientHandler extends Thread {
 					if (amount <= 0) {
 						return "FAIL";
 					}
-					return this.bank.customer.addingMoneyToBalance(type, amount);
+					return this.bank.customer.accounts.addingMoneyToBalance(type, amount);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -138,7 +138,7 @@ public class NewBankClientHandler extends Thread {
 					if (amountToWithdraw <= 0) {
 						return "FAIL";
 					}
-					return this.bank.customer.withdrawingMoneyToBalance(typeToWithdraw, amountToWithdraw);
+					return this.bank.customer.accounts.withdrawingMoneyToBalance(typeToWithdraw, amountToWithdraw);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -152,7 +152,7 @@ public class NewBankClientHandler extends Thread {
 					out.println(this.bank.customer.accounts.printAccounts());
 					out.println("Please enter new Account Name: ");
 					String accountName = in.readLine();
-					accountFound = this.bank.customer.addNewCustomerAccount(accountName);
+					accountFound = this.bank.customer.accounts.addNewCustomerAccount(accountName);
 					if (!accountFound) {
 						out.println("Please enter Opening Balance: ");
 						double openingBalance = Double.parseDouble(in.readLine());
@@ -209,7 +209,7 @@ public class NewBankClientHandler extends Thread {
 					Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amountToTransfer);
 					out.println(transferResult);
 					if (transferResult) {
-						this.bank.customers.get(typeToTransfer2).addingMoneyToBalance(typeToTransfer3, amountToTransfer);
+						this.bank.customers.get(typeToTransfer2).accounts.addingMoneyToBalance(typeToTransfer3, amountToTransfer);
 						return "SUCCESS";
 					}
 				} catch (Exception e) {

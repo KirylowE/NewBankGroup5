@@ -116,7 +116,7 @@ public class NewBank {
 		Boolean accountFound = false;
 		Scanner openingBal = new Scanner(System.in);
 
-		accountFound = this.customer.addNewCustomerAccount(name);
+		accountFound = this.customer.accounts.addNewCustomerAccount(name);
 		if (!accountFound) {
 			System.out.println("Please enter Opening Balance: ");
 			Double openingBalance = openingBal.nextDouble();
