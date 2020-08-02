@@ -55,7 +55,7 @@ public class AccountList {
 
   /**
    * Prints the list of the customers' accounts in a tabular form in the console.
-   * Note it also performs the database query to make sure the latest state is displayed
+   * Note it also performs the database query to make sure the latest state is displayed.
    *
    * @return formatted table
    */
