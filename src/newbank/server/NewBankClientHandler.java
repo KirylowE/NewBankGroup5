@@ -168,13 +168,15 @@ public class NewBankClientHandler extends Thread {
 	public synchronized String processRequest(String request) {
 		switch (request) {
 			case "1": {
-				// SHOWMYACCOUNTS
+				// SHOW MY ACCOUNTS
+				out.println("YOUR ACCOUNTS:");
 				return this.bank.showMyAccounts() + " ";
 			}
 
 			case "2": {
-				// DEPOSIT
+				// DEPOSIT MONEY
 				try {
+					out.println("\nCURRENT ACTION: DEPOSIT MONEY");
 					String operation = "to deposit money";
 					String acc = this.selectAccount(operation);
 					if (acc.equals("Q") || acc.equals("M")) {
@@ -195,6 +197,7 @@ public class NewBankClientHandler extends Thread {
 			case "3": {
 				// WITHDRAW
 				try {
+					out.println("\nCURRENT ACTION: WITHDRAW MONEY");
 					String operation = "to withdraw money";
 					String acc = this.selectAccount(operation);
 					if (acc.equals("Q") || acc.equals("M")) {
@@ -215,6 +218,7 @@ public class NewBankClientHandler extends Thread {
 			case "4": {
 				// NEWACCOUNT
 				try {
+					out.println("\nCURRENT ACTION: NEW ACCOUNT");
 					String status = "FAIL";
 					Boolean accountFound;
 					out.println(this.bank.customer.accounts.printAccounts());
@@ -243,6 +247,7 @@ public class NewBankClientHandler extends Thread {
 			case "5": {
 				// MOVE
 				try {
+					out.println("\nCURRENT ACTION: MOVE MONEY TO ANOTHER ACCOUNT");
 					out.println(this.bank.customer.accounts.printAccounts());
 					String accFrom = this.selectAccount("you wish to move money FROM");
 					if (accFrom == null) {
@@ -266,6 +271,7 @@ public class NewBankClientHandler extends Thread {
 			case "6": {
 				// PAY
 				try {
+					out.println("\nCURRENT ACTION: PAY SOMEONE");
 					String typeToTransfer1 = this.selectAccount("you wish to pay from");
 					if (typeToTransfer1 == null) {
 						return null;

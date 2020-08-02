@@ -62,7 +62,7 @@ public class AccountList {
   public String printAccounts() {
     this.loadAccounts();
     StringBuilder sb = new StringBuilder();
-    sb.append("\n\nNo");
+    sb.append("\nNo");
     sb.append(" ".repeat(3));
     sb.append(String.format("%6s", "Name"));
     sb.append(String.format("%28s", "Balance"));
