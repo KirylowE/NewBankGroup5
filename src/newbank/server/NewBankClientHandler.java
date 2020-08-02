@@ -36,7 +36,11 @@ public class NewBankClientHandler extends Thread {
 			try {
 				out.println(this.bank.customer.accounts.printAccounts());
 				out.println("Please select the account " + operation + " by typing the Account No.");
+				out.println("Type Q or M to return to Main Menu.");
 				String input = in.readLine();
+				if (input.equals("M") || input.equals("Q")) {
+					return input;
+				}
 				Optional<Account> account = this.bank.customer.accounts.getAccounts().stream().findFirst().filter(c -> c.getIndex().equals(input));
 				if (account.isPresent()) {
 					return account.get().getAccountName();
@@ -49,11 +53,14 @@ public class NewBankClientHandler extends Thread {
 	}
 
 
-	private double selectAmount(String operation) {
+	private Double selectAmount(String operation) {
 		while (true) {
 			try {
 				out.println("Please select the amount " + operation);
 				String input = in.readLine();
+				if (input.equals("M") || input.equals("Q")) {
+					return null;
+				}
 				if (ClientConsole.matchAmount(input)) {
 					double amount = Double.parseDouble(input);
 					if (amount > 0) {
@@ -152,8 +159,15 @@ public class NewBankClientHandler extends Thread {
 				try {
 					String operation = "to deposit money";
 					String acc = this.selectAccount(operation);
-					double amount = this.selectAmount(operation);
-						return this.bank.customer.accounts.addingMoneyToBalance(acc, amount);
+					if (acc.equals("Q") || acc.equals("M")) {
+						System.out.println("Menu command " + acc);
+						break;
+					}
+					Double amount = this.selectAmount(operation);
+					if (amount == null) {
+						break;
+					}
+					return this.bank.customer.accounts.addingMoneyToBalance(acc, amount);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -164,7 +178,14 @@ public class NewBankClientHandler extends Thread {
 				try {
 					String operation = "to withdraw money";
 					String acc = this.selectAccount(operation);
-					double amount = this.selectAmount(operation);
+					if (acc.equals("Q") || acc.equals("M")) {
+						System.out.println("Menu command " + acc);
+						break;
+					}
+					Double amount = this.selectAmount(operation);
+					if (amount == null) {
+						break;
+					}
 						return this.bank.customer.accounts.withdrawingMoneyToBalance(acc, amount);
         } catch (Exception e) {
 					e.printStackTrace();
@@ -204,8 +225,17 @@ public class NewBankClientHandler extends Thread {
 				try {
 					out.println(this.bank.customer.accounts.printAccounts());
 					String accFrom = this.selectAccount("you wish to move money FROM");
+					if (accFrom == null) {
+						return null;
+					}
 					String accTo = this.selectAccount("you wish to move money TO");
-					double amount = this.selectAmount("to move");
+					if (accTo == null) {
+						return null;
+					}
+					Double amount = this.selectAmount("to move");
+					if (amount == null) {
+						break;
+					}
 						return this.bank.customer.move(accFrom, accTo, amount);
         } catch (Exception e) {
 					e.printStackTrace();
@@ -216,11 +246,23 @@ public class NewBankClientHandler extends Thread {
 				// PAY
 				try {
 					String typeToTransfer1 = this.selectAccount("you wish to pay from");
+					if (typeToTransfer1 == null) {
+						return null;
+					}
 					out.println("Please, select the person/company: ");
 					String typeToTransfer2 = in.readLine();
+					if (typeToTransfer2 == null) {
+						return null;
+					}
 					out.println("Please, select the account of the person/company: ");
 					String typeToTransfer3 = in.readLine();
-					double amount = this.selectAmount("to transfer");
+					if (typeToTransfer3 == null) {
+						return null;
+					}
+					Double amount = this.selectAmount("to transfer");
+          if (amount == null) {
+            break;
+          }
 						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amount);
 						out.println(transferResult);
 						if (transferResult) {
