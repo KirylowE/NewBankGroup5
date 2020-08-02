@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +29,42 @@ public class NewBankClientHandler extends Thread {
 		out.println("-----------------------------");
 		out.println("New Bank Terminal is running.");
 		out.println("-----------------------------");
+	}
+
+	private String selectAccount(String operation) {
+		while (true) {
+			try {
+				out.println(this.bank.customer.accounts.printAccounts());
+				out.println("Please select the account " + operation + " by typing the Account No.");
+				String input = in.readLine();
+				Optional<Account> account = this.bank.customer.accounts.getAccounts().stream().findFirst().filter(c -> c.getIndex().equals(input));
+				if (account.isPresent()) {
+					return account.get().getAccountName();
+				}
+				out.println("Incorrect account.");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	private double selectAmount(String operation) {
+		while (true) {
+			try {
+				out.println("Please select the amount " + operation);
+				String input = in.readLine();
+				if (ClientConsole.matchAmount(input)) {
+					double amount = Double.parseDouble(input);
+					if (amount > 0) {
+						return amount;
+					}
+				}
+				out.println("Incorrect amount. The selected amount must be greater than 0.");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void run() {
@@ -113,15 +150,10 @@ public class NewBankClientHandler extends Thread {
 			case "2": {
 				// DEPOSIT
 				try {
-					out.println(this.bank.customer.accounts.printAccounts());
-					out.println("Please, select the account to deposit money by typing Account Name.");
-					String type = in.readLine();
-					out.println("Please, indicate the amount of money to deposit:  ");
-					double amount = Double.parseDouble(in.readLine());
-					if (amount <= 0) {
-						return "FAIL";
-					}
-					return this.bank.customer.accounts.addingMoneyToBalance(type, amount);
+					String operation = "to deposit money";
+					String acc = this.selectAccount(operation);
+					double amount = this.selectAmount(operation);
+						return this.bank.customer.accounts.addingMoneyToBalance(acc, amount);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -130,16 +162,11 @@ public class NewBankClientHandler extends Thread {
 			case "3": {
 				// WITHDRAW
 				try {
-					out.println(this.bank.customer.accounts.printAccounts());
-					out.println("Please, select the account to withdraw money by typing Account Name.");
-					String typeToWithdraw = in.readLine();
-					out.println("Please, indicate the amount of money: ");
-					double amountToWithdraw = Double.parseDouble(in.readLine());
-					if (amountToWithdraw <= 0) {
-						return "FAIL";
-					}
-					return this.bank.customer.accounts.withdrawingMoneyToBalance(typeToWithdraw, amountToWithdraw);
-				} catch (Exception e) {
+					String operation = "to withdraw money";
+					String acc = this.selectAccount(operation);
+					double amount = this.selectAmount(operation);
+						return this.bank.customer.accounts.withdrawingMoneyToBalance(acc, amount);
+        } catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -176,18 +203,11 @@ public class NewBankClientHandler extends Thread {
 				// MOVE
 				try {
 					out.println(this.bank.customer.accounts.printAccounts());
-					out.println("Please, select the account FROM: ");
-					String typeToMove1 = in.readLine();
-					out.println("Please, select the account TO: ");
-					String typeToMove2 = in.readLine();
-					out.println("Please, indicate the amount of money: ");
-					double amountToMove = Double.parseDouble(in.readLine());
-					if (amountToMove <= 0) {
-						return "FAIL";
-					} else {
-						return this.bank.customer.move(typeToMove1, typeToMove2, amountToMove);
-					}
-				} catch (Exception e) {
+					String accFrom = this.selectAccount("you wish to move money FROM");
+					String accTo = this.selectAccount("you wish to move money TO");
+					double amount = this.selectAmount("to move");
+						return this.bank.customer.move(accFrom, accTo, amount);
+        } catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -195,24 +215,20 @@ public class NewBankClientHandler extends Thread {
 			case "6": {
 				// PAY
 				try {
-					out.println("Please, select the account from which you wish to pay: ");
-					String typeToTransfer1 = in.readLine();
+					String typeToTransfer1 = this.selectAccount("you wish to pay from");
 					out.println("Please, select the person/company: ");
 					String typeToTransfer2 = in.readLine();
 					out.println("Please, select the account of the person/company: ");
 					String typeToTransfer3 = in.readLine();
-					out.println("Please, indicate the amount of money you wish to pay: ");
-					double amountToTransfer = Double.parseDouble(in.readLine());
-					if (amountToTransfer <= 0) {
-						return "FAIL";
-					}
-					Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amountToTransfer);
-					out.println(transferResult);
-					if (transferResult) {
-						this.bank.customers.get(typeToTransfer2).accounts.addingMoneyToBalance(typeToTransfer3, amountToTransfer);
-						return "SUCCESS";
-					}
-				} catch (Exception e) {
+					double amount = this.selectAmount("to transfer");
+						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amount);
+						out.println(transferResult);
+						if (transferResult) {
+							this.bank.customers.get(typeToTransfer2).accounts.addingMoneyToBalance(typeToTransfer3, amount);
+							return "SUCCESS";
+						}
+          break;
+        } catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
