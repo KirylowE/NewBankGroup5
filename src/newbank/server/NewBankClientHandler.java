@@ -285,26 +285,6 @@ public class NewBankClientHandler extends Thread {
 					}
 					out.println("Please, select the account of the person/company: ");
 					String typeToTransfer3 = in.readLine();
-          out.println("Please, indicate the amount of money you wish to pay: ");
-					double amountToTransfer = Double.parseDouble(in.readLine());
-					if (amountToTransfer <= 0) {
-						return "FAIL";
-					}
-					Boolean transferResult = this.bank.customer.pay(typeToTransfer1,amountToTransfer);
-					out.println(transferResult);
-					if (transferResult) {
-						this.bank.customers.get(typeToTransfer2).addingMoneyToBalance(typeToTransfer3, amountToTransfer);
-						return "SUCCESS";
-            out.println("Please, indicate the amount of money you wish to pay: ");
-					double amountToTransfer = Double.parseDouble(in.readLine());
-					if (amountToTransfer <= 0) {
-						return "FAIL";
-					}
-					Boolean transferResult = this.bank.customer.pay(typeToTransfer1,amountToTransfer);
-					out.println(transferResult);
-					if (transferResult) {
-						this.bank.customers.get(typeToTransfer2).addingMoneyToBalance(typeToTransfer3, amountToTransfer);
-						return "SUCCESS";
             if (typeToTransfer3 == null) {
 						return null;
 					}
@@ -313,7 +293,7 @@ public class NewBankClientHandler extends Thread {
 						this.mainMenu();
 						break;
           }
-						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amount);
+						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, amount);
 						out.println(transferResult);
 						if (transferResult) {
 							this.bank.customers.get(typeToTransfer2).accounts.addingMoneyToBalance(typeToTransfer3, amount);
