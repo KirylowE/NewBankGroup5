@@ -105,12 +105,12 @@ public class NewBankClientHandler extends Thread {
       while (limit >= 0) {
         // ask for user name
         out.println("\nEnter Username");
-        // String userName = in.readLine();
-        String userName = "vip";
+        String userName = in.readLine();
+        // String userName = "vip";
         // ask for password
         out.println("Enter Password");
-        // String password = in.readLine();
-        String password = " ";
+        String password = in.readLine();
+        // String password = " ";
         out.println("Checking Details...");
         // authenticate user and get customer object from bank for use in subsequent requests
         Customer customer = bank.checkLogInDetails(userName, password);
