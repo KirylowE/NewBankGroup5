@@ -48,9 +48,10 @@ public class NewBankClientHandler extends Thread {
 				if (input.equals("M") || input.equals("Q")) {
 					return input;
 				}
-				Optional<Account> account = this.bank.customer.accounts.getAccounts().stream().findFirst().filter(c -> c.getIndex().equals(input));
-				if (account.isPresent()) {
-					return account.get().getAccountName();
+				for (Account account : this.bank.customer.accounts.getAccounts()) {
+					if (account.getIndex().equals(input)) {
+						return account.getAccountName();
+					}
 				}
 				out.println("Incorrect account.");
 			} catch (Exception e) {

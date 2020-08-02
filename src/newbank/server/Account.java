@@ -70,7 +70,7 @@ public class Account {
 	 }
 
 	public static void main(String[] args) {
-		System.out.println(new Account("1", "1", "2", 1000));
+		System.out.println();
 	}
 	
 }

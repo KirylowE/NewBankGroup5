@@ -97,9 +97,7 @@ public class AccountList {
         a.addMoneyToBalance(amountToAdd);
         // save accounts to database
         this.updateAccounts();
-        return "\nREQUEST ACCEPTED"
-            + " - "
-            + " DEPOSIT " + a.getAccountName()
+        return "\nSUCCESS. DEPOSIT to the account " + a.getAccountName()
             + ". NEW BALANCE = " + a.getBalance()
             + "\n";
       }
@@ -121,13 +119,12 @@ public class AccountList {
           a.subtractMoneyToBalance(amountToSubtract);
           // save accounts to database
           this.updateAccounts();
-          return "REQUEST ACCEPTED " + " - " + " WITHDRAW " + a.getAccountName();
+          return "\nSUCCESS. WITHDRAWAL from the account " + a.getAccountName()
+              + ". NEW BALANCE = " + a.getBalance()
+              + "\n";
         } else {
-          return "REQUEST DENIED "
-              + " - "
-              + " Not enough money in the account "
-              + a.getAccountName()
-              + " withdrawal";
+          return " Not enough money in the account "
+              + a.getAccountName();
         }
       }
     }
