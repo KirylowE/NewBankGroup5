@@ -362,7 +362,7 @@ try{
 							boolean transferResultToMicroLoan=this.bank.customer.pay(l.getAccountName(), amountToReceive);
 							System.out.println(transferResultToMicroLoan); // false
 							if(transferResultToMicroLoan){
-								this.bank.customer.addingMoneyToBalance(accountNameBorrower, amountToReceive);
+								this.bank.customer.accounts.addingMoneyToBalance(accountNameBorrower, amountToReceive);
 								l.setAmountLent(amountToReceive);
 								if (this.bank.loans.containsKey(lenderName) == false)
 									this.bank.loans.put(lenderName, new ArrayList<Lend>());
