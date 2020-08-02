@@ -69,6 +69,7 @@ public class NewBankClientHandler extends Thread {
 		while (true) {
 			try {
 				out.println("Please select the amount " + operation);
+				out.println("Type Q or M to return to Main Menu.");
 				String input = in.readLine();
 				if (input.equals("M") || input.equals("Q")) {
 					return null;
@@ -113,32 +114,37 @@ public class NewBankClientHandler extends Thread {
         // authenticate user and get customer object from bank for use in subsequent requests
         Customer customer = bank.checkLogInDetails(userName, password);
         // if the user is authenticated then get requests from the user and process them
-        if (customer != null) {
-          // server logging
-          Logger.getLogger(this.className).log(Level.INFO, customer.getUserName() + " user logged in success.");
-          // client messages
-          out.println("\nLog In Successful.");
-          out.println("Hello " + customer.getFirstName() + ". Please select option.\n");
-          while (true) {
-            mainMenu();
-            String request = in.readLine();
-            if (request.equals("EXIT")) {
-              String responce = "Exiting";
-              out.println(responce);
-              break;
-            }
-            System.out.println("Request from " + customer.getFirstName() + " (" + customer.getUserName() + ")");
-            String responce = this.processRequest(request);
-            out.println(responce);
-          }
-        } else {
-          String one = limit == 1 ? "" : "s";
-          // client messages
-          out.println("Incorrect username or password.");
-          out.println(limit + " more attempt" + one + " before account is locked.");
-          limit--;
-        }
-      }
+				if (customer != null) {
+					// server logging
+					Logger.getLogger(this.className).log(Level.INFO, customer.getUserName() + " user logged in success.");
+					// client messages
+					out.println("\nLog In Successful.");
+					out.println("Hello " + customer.getFirstName() + ". Please select option.\n");
+					this.mainMenu();
+					while (true) {
+						out.println("Main Menu. Please type an option (1 - 8) and hit the Enter key.");
+						out.println("Type P or M to list all options.");
+						String request = in.readLine();
+						if (request.equals("M") || request.equals("P")) {
+						this.mainMenu();
+						}
+							if (request.equals("EXIT")) {
+							String responce = "Exiting";
+							out.println(responce);
+							break;
+						}
+						System.out.println("Request from " + customer.getFirstName() + " (" + customer.getUserName() + ")");
+						String responce = this.processRequest(request);
+						out.println(responce);
+					}
+				} else {
+					String one = limit == 1 ? "" : "s";
+					// client messages
+					out.println("Incorrect username or password.");
+					out.println(limit + " more attempt" + one + " before account is locked.");
+					limit--;
+				}
+			}
       out.println("Maximum login attempts reached. Please contact customer service.");
 
     } catch (IOException e) {
@@ -172,11 +178,12 @@ public class NewBankClientHandler extends Thread {
 					String operation = "to deposit money";
 					String acc = this.selectAccount(operation);
 					if (acc.equals("Q") || acc.equals("M")) {
-						System.out.println("Menu command " + acc);
+						this.mainMenu();
 						break;
 					}
 					Double amount = this.selectAmount(operation);
 					if (amount == null) {
+						this.mainMenu();
 						break;
 					}
 					return this.bank.customer.accounts.addingMoneyToBalance(acc, amount);
@@ -191,11 +198,12 @@ public class NewBankClientHandler extends Thread {
 					String operation = "to withdraw money";
 					String acc = this.selectAccount(operation);
 					if (acc.equals("Q") || acc.equals("M")) {
-						System.out.println("Menu command " + acc);
+						this.mainMenu();
 						break;
 					}
 					Double amount = this.selectAmount(operation);
 					if (amount == null) {
+						this.mainMenu();
 						break;
 					}
 						return this.bank.customer.accounts.withdrawingMoneyToBalance(acc, amount);
@@ -246,6 +254,7 @@ public class NewBankClientHandler extends Thread {
 					}
 					Double amount = this.selectAmount("to move");
 					if (amount == null) {
+						this.mainMenu();
 						break;
 					}
 						return this.bank.customer.move(accFrom, accTo, amount);
@@ -273,7 +282,8 @@ public class NewBankClientHandler extends Thread {
 					}
 					Double amount = this.selectAmount("to transfer");
           if (amount == null) {
-            break;
+						this.mainMenu();
+						break;
           }
 						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amount);
 						out.println(transferResult);
@@ -299,7 +309,7 @@ public class NewBankClientHandler extends Thread {
 			}
 
 			default: {
-				return "FAIL";
+				return "";
 			}
 
 		}
@@ -319,6 +329,5 @@ public class NewBankClientHandler extends Thread {
 		out.println("  7   GET MICROLOAN");
 		out.println("  8   LOG OUT");
 		out.println("................................");
-		out.println("Please type an option (1 - 8) and hit the Enter key.");
 	}
 }
