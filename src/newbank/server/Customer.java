@@ -61,14 +61,12 @@ public class Customer {
   /**
    * pay allows each customer to give money to another customer
    *
-   * @param nameAccountSendsMoney
-   * @param ownerAccountNameReceivesMoney
-   * @param accountNameReceivesMoney
-   * @param amountToTransfer
-   * @return
+   * @param nameAccountSendsMoney  account name
+   * @param amountToTransfer amount to transfer
+   * @return true if success
    */
   public boolean pay(String nameAccountSendsMoney, double amountToTransfer) {
-    for (Account a : accounts) {
+    for (Account a : this.accounts.getAccounts()) {
       if (a.getAccountName().equals(nameAccountSendsMoney)) {
 
         if (amountToTransfer <= a.getBalance()) {
@@ -113,7 +111,7 @@ public class Customer {
 
 
   public boolean validationDataLender(String accountName, Double amountToLend, Double interestRate) {
-    for (Account a : accounts){
+    for (Account a : this.accounts.getAccounts()){
       if(a.getAccountName().equals(accountName)){
         if(amountToLend <= a.getBalance()) {
           return true;
