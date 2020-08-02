@@ -58,15 +58,6 @@ public class Customer {
     return null;
   }
 
-
-
-
-
-
-
-
-
-
   /**
    * pay allows each customer to give money to another customer
    *
