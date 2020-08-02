@@ -31,6 +31,12 @@ public class NewBankClientHandler extends Thread {
 		out.println("-----------------------------");
 	}
 
+	/**
+	 * Account selection screen
+	 *
+	 * @param operation String to be included in prompt (e.g. "to deposit money")
+	 * @return response String with account name or menu command
+	 */
 	private String selectAccount(String operation) {
 		while (true) {
 			try {
@@ -52,7 +58,12 @@ public class NewBankClientHandler extends Thread {
 		}
 	}
 
-
+	/**
+	 * Account selection screen
+	 *
+	 * @param operation String to be included in prompt (e.g. "to deposit money")
+	 * @return amount of money selected or null if menu command
+	 */
 	private Double selectAmount(String operation) {
 		while (true) {
 			try {
