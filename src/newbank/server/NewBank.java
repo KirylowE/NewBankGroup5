@@ -56,24 +56,24 @@ public class NewBank {
   	// TODO: Add surnames or change to random names altogether
 
 		Customer bhagy = new Customer("1", "Bhagy");
-		bhagy.addAccount(new Account("Main", 1000.0));
+		bhagy.accounts.addAccount(new Account("Main", 1000.0));
 		customers.put("Bhagy", bhagy);
 
 		Customer christina = new Customer("2", "Christina");
-		christina.addAccount(new Account("Savings", 1500.0));
+		christina.accounts.addAccount(new Account("Savings", 1500.0));
 		customers.put("Christina", christina);
 
 		Customer john = new Customer("3", "John");
-		john.addAccount(new Account("Checking1", 250.0));
-		john.addAccount(new Account("Checking2", 350.0));
+		john.accounts.addAccount(new Account("Checking1", 250.0));
+		john.accounts.addAccount(new Account("Checking2", 350.0));
 		customers.put("John", john);
 
 		Customer isabel = new Customer("4", "Isabel");
-		isabel.addAccount(new Account(" Balance", 750.0));
+		isabel.accounts.addAccount(new Account(" Balance", 750.0));
 		customers.put("Isabel", isabel);
 
 		Customer anna = new Customer("5", "Anna");
-		anna.addAccount(new Account("Checking", 1250.0));
+		anna.accounts.addAccount(new Account("Checking", 1250.0));
 		customers.put("Anna", anna);
 	}
 
@@ -103,7 +103,7 @@ public class NewBank {
 	 * @return
 	 */
 	public String showMyAccounts() {
-		return this.customer.printAccounts();
+		return this.customer.accounts.printAccounts();
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class NewBank {
 		Boolean accountFound = false;
 		Scanner openingBal = new Scanner(System.in);
 
-		accountFound = this.customer.addNewCustomerAccount(name);
+		accountFound = this.customer.accounts.addNewCustomerAccount(name);
 		if (!accountFound) {
 			System.out.println("Please enter Opening Balance: ");
 			Double openingBalance = openingBal.nextDouble();
@@ -124,7 +124,7 @@ public class NewBank {
 				System.out.println("Please enter a positive amount.");
 				openingBalance = openingBal.nextDouble();
 			}
-			this.customer.addAccount(new Account(name, openingBalance));
+			this.customer.accounts.addAccount(new Account(name, openingBalance));
 			status = "SUCCESS";
 		}
 		else{
