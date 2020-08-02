@@ -22,7 +22,7 @@ public class AccountList {
   }
 
   /**
-   * Loads the account list from database and updates the local this.accounts field
+   * Loads the account list from database and updates the local this.accounts field.
    */
   public void loadAccounts() {
     this.accounts = this.dispatcher.readAccounts(this.customer);
