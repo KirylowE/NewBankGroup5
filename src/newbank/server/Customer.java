@@ -148,15 +148,14 @@ public class Customer {
    * @return
    */
 
-  public Boolean pay(String nameAccountSendsMoney, String ownerAccountNameReceivesMoney, String accountNameReceivesMoney, double amountToTransfer) {
+  public boolean pay(String nameAccountSendsMoney, double amountToTransfer) {
     for (Account a : accounts) {
-      if (a.getAccountName().equalsIgnoreCase(nameAccountSendsMoney)) {
+      if (a.getAccountName().equals(nameAccountSendsMoney)) {
         if (amountToTransfer <= a.getBalance()) {
           a.subtractMoneyToBalance(amountToTransfer);
           return true;
         }
       }
-      return false;
     }
     return false; // if the flow does not enter in the for
   }
@@ -187,6 +186,18 @@ public class Customer {
     }
 
     return "FAIL";
+  }
+
+
+  public boolean validationDataLender(String accountName, Double amountToLend, Double interestRate) {
+    for (Account a : accounts){
+      if(a.getAccountName().equals(accountName)){
+        if(amountToLend <= a.getBalance()) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 

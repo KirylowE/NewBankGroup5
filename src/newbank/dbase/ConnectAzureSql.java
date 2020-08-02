@@ -150,6 +150,7 @@ public final class ConnectAzureSql implements IConnect {
     } catch (SQLException e) {
       Logger.getLogger(this.className).log(Level.SEVERE, "Unable to create entry.", e);
     }
+
   }
 
   /**

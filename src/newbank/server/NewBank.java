@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 public class NewBank {
 
@@ -14,8 +15,11 @@ public class NewBank {
 
   private final String className = NewBankClientHandler.class.getName();
   public HashMap<String, Customer> customers;
-  private Dispatcher dispatcher;
-  public Customer customer;
+	private Dispatcher dispatcher;
+	public Customer customer;
+	public ArrayList<Lender> lenders;
+	public HashMap <String, ArrayList<Lend>> loans;
+
 
 
   /**
