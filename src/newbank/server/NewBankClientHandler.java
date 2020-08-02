@@ -412,20 +412,20 @@ try{
 	}
 
 	public void mainMenu() {
-    
-    out.println("New Bank Menu");
-		out.println("1. SHOWMYACCOUNTS");
-		out.println("2. DEPOSIT");
-		out.println("3. WITHDRAW");
-		out.println("4. NEWACCOUNT");
-		out.println("5. MOVE");
-		out.println("6. PAY");
-		out.println("7. BECOME A LENDER");
-		out.println("8. SHOW LENDERS");
-		out.println("9. MICROLOAN");
-		out.println("10. SHOW LOANS");
-		out.println("11. LOG OUT");
-		out.println("Please enter an option (1 - 11):");
-
+		out.println(".............");
+		out.println(". Main Menu .");
+		out.println("...........................................");
+		out.println("   1   SHOW MY ACCOUNTS                   .");
+		out.println("   2   DEPOSIT MONEY                      .");
+		out.println("   3   WITHDRAW MONEY                     .");
+		out.println("   4   NEW ACCOUNT                        .");
+		out.println("   5   MOVE MONEY TO ANOTHER ACCOUNT      .");
+		out.println("   6   PAY SOMEONE                        .");
+		out.println("   7   BECOME A LENDER                    .");
+		out.println("   8   SHOW LENDER                        .");
+		out.println("   9   GET MICROLOAN                      .");
+		out.println("  10   SHOW LOANS                         .");
+		out.println("  11   LOG OUT                            .");
+		out.println("...........................................");
 	}
 }
