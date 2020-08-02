@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -284,7 +285,7 @@ public class NewBankClientHandler extends Thread {
 					}
 					out.println("Please, select the account of the person/company: ");
 					String typeToTransfer3 = in.readLine();
-					if (typeToTransfer3 == null) {
+            if (typeToTransfer3 == null) {
 						return null;
 					}
 					Double amount = this.selectAmount("to transfer");
@@ -292,7 +293,7 @@ public class NewBankClientHandler extends Thread {
 						this.mainMenu();
 						break;
           }
-						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, typeToTransfer2, typeToTransfer3, amount);
+						Boolean transferResult = this.bank.customer.pay(typeToTransfer1, amount);
 						out.println(transferResult);
 						if (transferResult) {
 							this.bank.customers.get(typeToTransfer2).accounts.addingMoneyToBalance(typeToTransfer3, amount);
@@ -304,7 +305,94 @@ public class NewBankClientHandler extends Thread {
 				}
 			}
 
-			case "8": {
+			case "7":{
+				// BECOME A LENDER
+	try{
+				//Scanner inToBecomeLender= new Scanner(System.in);
+				out.println("Please, select the account: ");
+				String accountName=in.readLine();
+				out.println("Please, select the amount to lend: ");
+				double amountToLend= Double.parseDouble(in.readLine());
+				out.println("Please, indicate the interest rate: ");
+				double interestRate= Double.parseDouble(in.readLine());
+				if(this.bank.customer.validationDataLender(accountName, amountToLend , interestRate)) {
+					Lender lender = new Lender(this.bank.customer.getPrimaryKey(),accountName,amountToLend,interestRate);
+					this.bank.lenders.add(lender);
+					return "SUCCESS";
+				}
+				return "FALSE";
+		}
+
+	catch (Exception e) {
+		e.printStackTrace();
+	}
+
+			}
+
+			case "8":{
+				// SHOW LENDERS
+				if (this.bank.lenders.size()==0){
+					return "No Lenders available or error occurred";
+				}
+
+					for(Lender l : this.bank.lenders) {
+						System.out.println(l.toString());
+					}
+					return "SUCCESS";
+
+
+			}
+
+			case "9":{
+
+				// MICROLOAN
+
+try{
+				System.out.println("Please, select the lender: ");
+				String lenderName=in.readLine();
+				System.out.println("Please, select the account where to receive money: ");
+				String accountNameBorrower=in.readLine();
+				System.out.println("Please, indicate the amount to receive: ");
+				double amountToReceive=Double.parseDouble(in.readLine());
+				//System.out.print(lenders);
+				//return "true";
+				for(Lender l : this.bank.lenders){
+					if(l.getCustomerID().equalsIgnoreCase(lenderName)){
+						if (l.getAmountLent() <= l.getAmountToLend() - amountToReceive) {
+							boolean transferResultToMicroLoan=this.bank.customer.pay(l.getAccountName(), amountToReceive);
+							System.out.println(transferResultToMicroLoan); // false
+							if(transferResultToMicroLoan){
+								this.bank.customer.accounts.addingMoneyToBalance(accountNameBorrower, amountToReceive);
+								l.setAmountLent(amountToReceive);
+								if (this.bank.loans.containsKey(lenderName) == false)
+									this.bank.loans.put(lenderName, new ArrayList<Lend>());
+								ArrayList<Lend> aL = this.bank.loans.get(lenderName);
+								aL.add(new Lend(this.bank.customer.getPrimaryKey(),amountToReceive,l.getInterestRate()));
+								this.bank.loans.replace(lenderName,aL);
+								return "SUCCESS";
+							}
+						}
+					}
+				}
+				return "FAIL";
+		}
+				catch (Exception e) {
+								e.printStackTrace();
+				}
+
+
+
+			}
+			case "10":{
+				// SHOW LOANS
+
+				if (this.bank.loans.isEmpty()) {
+					return "No loans available";
+				}
+				return this.bank.loans.toString() ;
+
+			}
+			case "11": {
 				// LOG OUT
 				// Client message
 				out.println(this.bank.customer.getUserName() + " logged out.");
@@ -326,15 +414,18 @@ public class NewBankClientHandler extends Thread {
 	public void mainMenu() {
 		out.println(".............");
 		out.println(". Main Menu .");
-		out.println("..........................................");
-		out.println("  1   SHOW MY ACCOUNTS                   .");
-		out.println("  2   DEPOSIT MONEY                      .");
-		out.println("  3   WITHDRAW MONEY                     .");
-		out.println("  4   NEW ACCOUNT                        .");
-		out.println("  5   MOVE MONEY TO ANOTHER ACCOUNT      .");
-		out.println("  6   PAY SOMEONE                        .");
-		out.println("  7   GET MICROLOAN                      .");
-		out.println("  8   LOG OUT                            .");
-		out.println("..........................................");
+		out.println("...........................................");
+		out.println("   1   SHOW MY ACCOUNTS                   .");
+		out.println("   2   DEPOSIT MONEY                      .");
+		out.println("   3   WITHDRAW MONEY                     .");
+		out.println("   4   NEW ACCOUNT                        .");
+		out.println("   5   MOVE MONEY TO ANOTHER ACCOUNT      .");
+		out.println("   6   PAY SOMEONE                        .");
+		out.println("   7   BECOME A LENDER                    .");
+		out.println("   8   SHOW LENDER                        .");
+		out.println("   9   GET MICROLOAN                      .");
+		out.println("  10   SHOW LOANS                         .");
+		out.println("  11   LOG OUT                            .");
+		out.println("...........................................");
 	}
 }
