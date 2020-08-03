@@ -50,6 +50,8 @@ public final class ConnectAzureSql implements IConnect {
 
   /**
    * Creation of the database connection.
+   * Azure SQL enters the sleep mode after a period of inactivity.
+   * Therefore, the first connect attempt might fail and retry is required.
    */
   public void createConnection() {
     String host = "jdbc:sqlserver://new-bank.database.windows.net:1433;database=newbank;";
@@ -63,7 +65,8 @@ public final class ConnectAzureSql implements IConnect {
       Logger.getLogger(this.className).log(Level.SEVERE, "Database connection error.");
       int errorCode = e.getErrorCode();
       if (errorCode == 40613) {
-        System.out.println("Retry...");
+        // Sleep mode, try to connect again.
+        System.out.println("Retrying a connection...");
         createConnection();
       }
     }
