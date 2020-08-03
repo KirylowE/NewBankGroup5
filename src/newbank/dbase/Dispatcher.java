@@ -1,19 +1,19 @@
 package newbank.dbase;
 
-import newbank.server.Account;
-import newbank.server.Customer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import newbank.server.Account;
+import newbank.server.Customer;
+
 /**
  * This class manages all actions related to the data persistence,
  * a bridge between the database read and write operations and the business logic.
  * Methods in this class retrieve and process the data. Other classes can request data
  * and expect Java objects returned rather than a string/text format
- * <p>
  * It uses a basic singleton pattern to ensure that it can only be instantiated once.
  */
 public final class Dispatcher {
@@ -37,6 +37,11 @@ public final class Dispatcher {
     this.createDbaseConnection();
   }
 
+  /**
+   * Single entry point to create only one instance of this class.
+   *
+   * @return this class instance
+   */
   public static Dispatcher getInstance() {
     if (SingleInstance == null) {
       SingleInstance = new Dispatcher();
@@ -45,6 +50,9 @@ public final class Dispatcher {
   }
 
 
+  /**
+   * Creates a database connection using the values from the env variables.
+   */
   private void createDbaseConnection() {
     System.out.print("Creating a database connection...");
 
@@ -60,15 +68,27 @@ public final class Dispatcher {
     System.out.println(this.getStatus());
   }
 
+  /**
+   * Prints status of the database connection.
+   *
+   * @return "OK" if connection is live
+   */
   private String getStatus() {
     return this.dbase.checkConnection() ? "OK" : "Failed";
   }
 
 
+  /**
+   * Get customer by user name.
+   *
+   * @param userNameEntered user name
+   * @return Customer object
+   */
   public Customer getCustomerByUserName(String userNameEntered) {
     // TODO: create central mapping for the table names
-    SqlQuery usernameQuery = new SqlQuery("SELECT * FROM Customer WHERE UserName='" + userNameEntered + "';");
-    Map<String, Object> entry = this.dbase.getEntryByProperty(usernameQuery);
+    String query = "SELECT * FROM Customer WHERE UserName='" + userNameEntered + "';";
+    SqlQuery sqlQuery = new SqlQuery(query);
+    Map<String, Object> entry = this.dbase.getEntryByProperty(sqlQuery);
     if (entry != null) {
       // entity must be created with the primary key  and user name provided
       String primaryKey = entry.get("Id").toString();
@@ -82,6 +102,11 @@ public final class Dispatcher {
     return null;
   }
 
+  /**
+   * Get all Customers mapped to the correct Java data structure.
+   *
+   * @return Collection of Customers
+   */
   public HashMap<String, Customer> getCustomers() {
     // TODO: create central mapping for the table names
 
@@ -103,8 +128,10 @@ public final class Dispatcher {
   }
 
   /**
-   * @param customer
-   * @return
+   * Get the customer Accounts mapped to the correct Java data structure.
+   *
+   * @param customer Customer object
+   * @return Collection of accounts for the customer
    */
   public List<Account> readAccounts(Customer customer) {
     /*
@@ -115,10 +142,10 @@ public final class Dispatcher {
      */
     List<Account> output = new ArrayList<>();
     SqlQuery sqlQuery = new SqlQuery(
-        "SELECT Accounts.Id, Accounts.CustomerID, Accounts.Balance, AccountTypes.AccountType " +
-            "FROM Accounts " +
-            "INNER JOIN AccountTypes ON AccountTypes.Id = Accounts.AccountTypeID " +
-            "WHERE CustomerID=" + customer.getPrimaryKey() + ";");
+        "SELECT Accounts.Id, Accounts.CustomerID, Accounts.Balance, AccountTypes.AccountType "
+            + "FROM Accounts "
+            + "INNER JOIN AccountTypes ON AccountTypes.Id = Accounts.AccountTypeID "
+            + "WHERE CustomerID=" + customer.getPrimaryKey() + ";");
     List<Map<String, Object>> entries = this.dbase.getEntries(sqlQuery);
     int index = 1;
     for (Map<String, Object> entry : entries) {
@@ -133,6 +160,11 @@ public final class Dispatcher {
     return output;
   }
 
+  /**
+   * Update accounts for the customer.
+   *
+   * @param customer Customer object
+   */
   public void updateAccounts(Customer customer) {
     for (Account account : customer.accounts.getAccounts()) {
       String balance = String.valueOf(account.getBalance());
@@ -144,15 +176,18 @@ public final class Dispatcher {
 
   /**
    * Example usages of the 'dbase' object which is publicly available through Dispatcher.
-   * <p>
-   * Inside the dispatcher class (main method is an exception and requires an instantiation of dispatcher):
+   * Inside the dispatcher class
+   * (main method is an exception and requires an instantiation of dispatcher):
    * ----------------------------
-   * this.dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
-   * <p>
+   * this.dbase.createEntry(
+   * new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');")
+   * );
    * Everywhere else (including this main method), after instantiating a Dispatcher object:
    * ---------------------------------------------------------
    * Dispatcher dispatcher = Dispatcher.getInstance();
-   * dispatcher.dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
+   * dispatcher.dbase.createEntry(
+   * new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');")
+   * );
    **/
 
   public static void main(String[] args) {
@@ -164,12 +199,5 @@ public final class Dispatcher {
     Map<String, Object> result = dispatcher.dbase.getEntryById("Customer", "2");
     System.out.println(result);
     System.out.println("-----------");
-    dispatcher.dbase.updateEntry(new SqlQuery("UPDATE Customer SET FirstName='Sabrina' WHERE Id='2';"));
-    Map<String, Object> updatedResult = dispatcher.dbase.getEntryById("Customer", "2");
-    System.out.println(updatedResult);
-    System.out.println("-----------");
-    dispatcher.dbase.createEntry("Customer");
-    dispatcher.dbase.createEntry(new SqlQuery("INSERT INTO Customer (FirstName, LastName) VALUES ('Ray', 'Meyer');"));
-
   }
 }
