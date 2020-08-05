@@ -161,6 +161,42 @@ public final class Dispatcher {
   }
 
   /**
+   * Get the accounts that can be offered to Customers
+   * mapped to the correct Java data structure.
+   *
+   * @param customer Customer object
+   * @return Collection of accounts available to open
+   */
+  public List<Account> readNewAccounts(Customer customer) {
+    /*
+     * SELECT AccountTypes.Id, AccountTypes.AccountType, AccountTypes.InterestRate
+     * FROM AccountTypes
+     * WHERE AccountTypes.Id NOT IN
+     * (SELECT Accounts.AccountTypeID FROM Accounts WHERE CustomerID = 1);
+     */
+    List<Account> output = new ArrayList<>();
+    SqlQuery sqlQuery = new SqlQuery(
+        "SELECT AccountTypes.Id, AccountTypes.AccountType, AccountTypes.InterestRate "
+            + "FROM AccountTypes "
+            + "WHERE AccountTypes.Id NOT IN "
+            + "(SELECT Accounts.AccountTypeID FROM Accounts "
+            + "WHERE CustomerID=" + customer.getPrimaryKey() + ");");
+    List<Map<String, Object>> entries = this.dbase.getEntries(sqlQuery);
+    int index = 1;
+    for (Map<String, Object> entry : entries) {
+      // entity must be created with the primary key provided
+      String primaryKey = entry.get("Id").toString();
+      double balance = 0;
+      String accountType = entry.get("AccountType").toString();
+      Account account = new Account(String.valueOf(index), primaryKey, accountType, balance);
+      output.add(account);
+      index++;
+    }
+    return output;
+  }
+
+
+  /**
    * Update accounts for the customer.
    *
    * @param customer Customer object
