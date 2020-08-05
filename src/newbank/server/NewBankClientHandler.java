@@ -220,7 +220,7 @@ public class NewBankClientHandler extends Thread {
 			case "4": {
 				// NEWACCOUNT
 				try {
-					out.println("\nCURRENT ACTION: NEW ACCOUNT");
+					out.println("\nCURRENT ACTION: CREATE NEW ACCOUNT");
 					String status = "FAIL";
 					Boolean accountFound;
 					out.println(this.bank.customer.accounts.printAccounts());
@@ -392,7 +392,30 @@ try{
 				return this.bank.loans.toString() ;
 
 			}
+
 			case "11": {
+				// Modify Customer Details
+				try {
+					out.println("\nCURRENT ACTION: MODIFY CUSTOMER DETAILS");
+					out.println("First Name: " + bank.customer.getFirstName());
+					out.println("Last Name: " + bank.customer.getLastName());
+					out.println("Date Of Birth: " + bank.customer.getDateOfBirth());
+					//out.println("Address: " + bank.customer.getAddress());
+					out.println("Address: ");
+					String address = in.readLine();
+					out.println("Telephone Number: ");
+					//out.println("Telephone Number: " + bank.customer.getTelephoneNumber());
+					int telephoneNumber = Integer.parseInt(in.readLine());
+					out.println("Email Id: ");
+					//out.println("Email Address: " + bank.customer.getEmailId());
+					String emailAddress = in.readLine();
+
+					return "SUCCESS";
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			case "12": {
 				// LOG OUT
 				// Client message
 				out.println(this.bank.customer.getUserName() + " logged out.");
@@ -418,14 +441,15 @@ try{
 		out.println("   1   SHOW MY ACCOUNTS                   .");
 		out.println("   2   DEPOSIT MONEY                      .");
 		out.println("   3   WITHDRAW MONEY                     .");
-		out.println("   4   NEW ACCOUNT                        .");
+		out.println("   4   CREATE NEW ACCOUNT                 .");
 		out.println("   5   MOVE MONEY TO ANOTHER ACCOUNT      .");
 		out.println("   6   PAY SOMEONE                        .");
 		out.println("   7   BECOME A LENDER                    .");
 		out.println("   8   SHOW LENDER                        .");
 		out.println("   9   GET MICROLOAN                      .");
 		out.println("  10   SHOW LOANS                         .");
-		out.println("  11   LOG OUT                            .");
+		out.println("  11   MODIFY CUSTOMER DETAILS            .");
+		out.println("  12   LOG OUT                            .");
 		out.println("...........................................");
 	}
 }
