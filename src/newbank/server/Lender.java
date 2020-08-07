@@ -11,6 +11,12 @@ public class Lender {
   private String customerID;
 
 
+  /**
+   * @param key
+   * @param accountName
+   * @param amountToLend
+   * @param interestRate
+   */
   public Lender(String key, String accountName, double amountToLend, double interestRate) {
     this.accountName=accountName;
     this.amountToLend = amountToLend;

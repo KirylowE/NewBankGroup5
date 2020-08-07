@@ -47,5 +47,4 @@ public class Lend {
   public void setInterestRate(double interestRate) {
     this.interestRate = interestRate;
   }
-
 }
