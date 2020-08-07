@@ -61,16 +61,17 @@ public class Customer {
 
   public String getDateOfBirth(){ return dateOfBirth; }
   public void setDateOfBirth(String dateOfBirth){ this.dateOfBirth = dateOfBirth; }
-/**
-  public String getaddress(){ return address; }
-  public void setaddress(String address){ this.address = address; }
+/** the following fields have to be created in the database before using them here
+  public String getAddress(){ return address; }
+  public void setAddress(String address){ this.address = address; }
 
   public int getTelephoneNumber(){ return telephoneNumber; }
   public void setTelephoneNumber(int telephoneNumber ){ this.telephoneNumber = telephoneNumber; }
 
   public String getEmailId(){ return emailId; }
-  public void setEmailId(String emalId){ this.emailId = emailId; }
+  public void setEmailId(String emailId){ this.emailId = emailId; }
   **/
+
   /**
    * pay allows each customer to give money to another customer
    *
