@@ -7,7 +7,12 @@ public class Lend {
   private double interestRate;
 
 
-
+  /**
+   * Lend method allows to define name of the borrower, amount received (lent) and loan's interest rate
+   * @param borrowerName
+   * @param amountLent
+   * @param interestRate
+   */
   public Lend(String borrowerName, double amountLent, double interestRate) {
     this.borrowerName = borrowerName;
     this.amountLent = amountLent;
@@ -19,6 +24,10 @@ public class Lend {
   public String toString() {
     return "Borrower name: " + borrowerName + ", amountLent: " + amountLent + ", interestRate:  " + interestRate;
   }
+
+  /**
+   * setters and getters to get borrowerName, amountLent, and interestRate
+   */
 
   public String getBorrowerName() {
     return borrowerName;
