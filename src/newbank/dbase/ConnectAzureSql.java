@@ -1,6 +1,11 @@
 package newbank.dbase;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +22,10 @@ public final class ConnectAzureSql implements IConnect {
   private static IConnect SingleInstance;
 
   /**
-   * Passing in the parameters (username and password) for the database
-   * @param dbUsername
-   * @param dbPassword
+   * Passing in the parameters (username and password) for the database.
+   *
+   * @param dbUsername username
+   * @param dbPassword password
    */
   // private constructor prevents from instantiating this class
   private ConnectAzureSql(String dbUsername, String dbPassword) {
@@ -28,11 +34,12 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   /**
-   * @param dbUsername
-   * @param dbPassword
-   * @return
+   * Single entry point to create only one instance of this class.
+   *
+   * @param dbUsername username
+   * @param dbPassword password
+   * @return this class instance
    */
-  // single entry point to create only one instance of this class
   public static IConnect getInstance(String dbUsername, String dbPassword) {
     if (SingleInstance == null) {
       SingleInstance = new ConnectAzureSql(dbUsername, dbPassword);
@@ -42,20 +49,34 @@ public final class ConnectAzureSql implements IConnect {
 
 
   /**
-   * creation of the database connection
+   * Creation of the database connection.
+   * Azure SQL enters the sleep mode after a period of inactivity.
+   * Therefore, the first connect attempt might fail and retry is required.
    */
   public void createConnection() {
+    String host = "jdbc:sqlserver://new-bank.database.windows.net:1433;database=newbank;";
+    String cred = "user=" + this.dbUsername + ";password=" + this.dbPassword + ";";
+    String arg1 = "encrypt=true;trustServerCertificate=false;";
+    String arg2 = "hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    String connectionString = host + cred + arg1 + arg2;
     try {
-      String host = "jdbc:sqlserver://new-bank.database.windows.net:1433;database=newbank;";
-      String cred = "user=" + this.dbUsername + ";password=" + this.dbPassword + ";";
-      String args = "encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-      String connectionString = host + cred + args;
       dbConnection = DriverManager.getConnection(connectionString);
     } catch (SQLException e) {
       Logger.getLogger(this.className).log(Level.SEVERE, "Database connection error.");
+      int errorCode = e.getErrorCode();
+      if (errorCode == 40613) {
+        // Sleep mode, try to connect again.
+        System.out.println("Retrying a connection...");
+        createConnection();
+      }
     }
   }
 
+  /**
+   * Validates the database connection.
+   *
+   * @return true if connection is valid
+   */
   public boolean checkConnection() {
     try {
       return dbConnection.isValid(10);
@@ -66,19 +87,21 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   /**
-   * Query of the selected table
-   * @param tableName
-   * @return
+   * Gets all entries. Performs the SELECT query to get all entries from a table.
+   *
+   * @param table database table name
+   * @return data from the table
    */
-  public List<Map<String, Object>> getEntries(String tableName) {
-    SqlQuery sqlQuery = new SqlQuery("SELECT * FROM " + tableName + ";");
+  public List<Map<String, Object>> getEntries(String table) {
+    SqlQuery sqlQuery = new SqlQuery("SELECT * FROM " + table + ";");
     return this.getEntries(sqlQuery);
   }
 
   /**
-   * A query is given and is executed by the database. Then, there's an output of results.
-   * @param sqlQuery
-   * @return
+   * Get all entries. Performs the SELECT query and maps columns
+   *
+   * @param sqlQuery query to be executed
+   * @return data from the table
    */
   public List<Map<String, Object>> getEntries(SqlQuery sqlQuery) {
     try {
@@ -101,19 +124,24 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   /**
-   * @param tableName
-   * @param primaryKey
-   * @return
+   * Gets entry by id. Performs the SELECT query and returns a single item by id then maps columns.
+   *
+   * @param table  database table
+   * @param pk primary key
+   * @return a record from the table
    */
-  public Map<String, Object> getEntryById(String tableName, String primaryKey) {
-    SqlQuery sqlQuery = new SqlQuery(String.format("SELECT * FROM %s WHERE Id=%s;", tableName, primaryKey));
+  public Map<String, Object> getEntryById(String table, String pk) {
+    String queryStr = String.format("SELECT * FROM %s WHERE Id=%s;", table, pk);
+    SqlQuery sqlQuery = new SqlQuery(queryStr);
     return this.getEntryByProperty(sqlQuery);
   }
 
 
   /**
-   * @param sqlQuery
-   * @return
+   * Gets entry by property. Performs the SELECT query and maps columns.
+   *
+   * @param sqlQuery query to be executed
+   * @return data from the table
    */
   public Map<String, Object> getEntryByProperty(SqlQuery sqlQuery) {
     try {
@@ -133,15 +161,9 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   /**
-   * @param tableName
-   */
-  public void createEntry(String tableName) {
-    SqlQuery sqlQuery = new SqlQuery("INSERT INTO " + tableName + "(FirstName, LastName) VALUES ('Mark', 'Fieldman');");
-    this.createEntry(sqlQuery);
-  }
-
-  /**
-   * @param sqlQuery
+   * Creates a new entry using the prepared SQL query.
+   *
+   * @param sqlQuery query to be executed
    */
   public void createEntry(SqlQuery sqlQuery) {
     try {
@@ -153,16 +175,21 @@ public final class ConnectAzureSql implements IConnect {
   }
 
   /**
-   * @param tableName
-   * @param primaryKey
+   * Updates entry using parameters.
+   *
+   * @param table  database table
+   * @param pk primary key
    */
-  public void updateEntry(String tableName, String fieldName, String fieldValue, String primaryKey) {
-    SqlQuery sqlQuery = new SqlQuery("UPDATE " + tableName + " SET " + fieldName + "='" + fieldValue + "' WHERE Id=" + primaryKey + ";");
+  public void updateEntry(String table, String field, String value, String pk) {
+    String query = "UPDATE " + table + " SET " + field + "='" + value + "' WHERE Id=" + pk + ";";
+    SqlQuery sqlQuery = new SqlQuery(query);
     this.updateEntry(sqlQuery);
   }
 
   /**
-   * @param sqlQuery
+   * Updates entry using the prepared SQL query.
+   *
+   * @param sqlQuery query to be executed
    */
   public void updateEntry(SqlQuery sqlQuery) {
     try {
