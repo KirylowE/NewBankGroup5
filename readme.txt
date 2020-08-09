@@ -6,8 +6,10 @@ Version: 0.2.0 (Prototype for submission)
 
 This project aims to fill a gap in the retail banking market by providing a terminal interface for bank account management.
 
-**Dependencies:**
+**JDK baseline required**
 * Java 11 or later
+
+**Dependencies:**
 * mssql jdbc 8.2.2 or later.
 
 The applications:
