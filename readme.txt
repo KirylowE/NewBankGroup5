@@ -4,6 +4,8 @@
 Version: 0.2.0 (Prototype for submission)
 -----------------------------------------
 
+This project aims to fill a gap in the retail banking market by providing a terminal interface for bank account management.
+
 Contribute to the project: [NewBank] (https://github.com/KirylowE/NewBankGroup5).
 
 Dependencies:
