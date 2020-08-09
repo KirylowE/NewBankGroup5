@@ -1,6 +1,6 @@
 Welcome to NewBank - Giving Back Control
 
-Version: (Prototype for submission)
+Version: 0.2.0 (Prototype for submission)
 
 Dependencies:
 Java 11 or later
