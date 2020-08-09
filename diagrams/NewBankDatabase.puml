@@ -13,27 +13,27 @@
        !define FK(x) <color:#424897><<FK>></color>  x<color:#000></color>
        !define PK(x) <color:#973A4A><<PK>></color> x : INTEGER desc(generated)
 
-       title Database ERD
+       title Group 5: New Bank
 
-       header New Bank
+       header Entity Relationship Diagram
        footer Group 5
 
        entity "Customer" {
         PK(Id)
         --
+        *UserName : VARCHAR
         *FirstName : VARCHAR
         *LastName : VARCHAR
-        *DOB : DATETIME
-        *CreatedOn : DATETIME
+        *DateOfBirth : DATE
+        *Created: DATETIMEOFFSET
+        *Modified: DATETIMEOFFSET
        }
-
-
 
        entity "Ledger" {
         PK(Id)
         --
-        *FK(FromAccountID) : INTEGER refers(Customer.Id)
-        *FK(ToAccountID) : INTEGER refers(Customer.Id)
+        *FK(FromAccount) : INTEGER refers(Customer.Id)
+        *FK(ToAccount) : INTEGER refers(Customer.Id)
         *Amount : DOUBLE
         *CommittedOn : DATETIME
        }
@@ -42,7 +42,7 @@
         PK(Id)
         --
         *(AccountType) : VARCHAR
-        *InterestRate : INTEGER
+        *InterestRate : DOUBLE
        }
 
        entity "Accounts" {
@@ -55,8 +55,8 @@
 
 
        ' relationships
-       Customer ||--|{ Accounts
-       AccountTypes ||--|{ Accounts
+       Customer }o-- Accounts
+       Accounts }|-- AccountTypes
        Ledger }|--|{ Accounts
 
        @enduml
