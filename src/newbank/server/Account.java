@@ -9,6 +9,11 @@ public class Account {
 	private double openingBalance;
 	private double amountForBalance;
 
+	/**
+	 * Account method allows to define the accountName and the current balance of the customer
+	 * @param accountName
+	 * @param openingBalance
+	 */
 	public Account(String accountName, double openingBalance){ //openingBalance= currentBalance
 		this.accountName = accountName;
 		this.openingBalance = openingBalance;
@@ -44,6 +49,12 @@ public class Account {
 		return sb.toString();
 	}
 
+	/**
+	 * addMoneyToBalance method allows to add money to an account
+	 * @param amountForBalance
+	 * @return
+	 */
+
 	public double addMoneyToBalance(double amountForBalance) {
 		this.openingBalance = this.openingBalance + amountForBalance;
 		return this.openingBalance;
@@ -60,8 +71,13 @@ public class Account {
 	 public double getBalance() {
 		 return openingBalance; 
 	 }
-	 
-	 
+
+
+	/**
+	 * subtractMoneyToBalance method allows to withdraw money from an account
+	 * @param amountForBalance
+	 * @return
+	 */
 	 public double subtractMoneyToBalance(double amountForBalance) {
 		  //return addMoneyToBalance(-amountForBalance);
 		 //or

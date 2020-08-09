@@ -347,7 +347,7 @@ public class NewBankClientHandler extends Thread {
 
 				// MICROLOAN
 
-try{
+			try{
 				System.out.println("Please, select the lender: ");
 				String lenderName=in.readLine();
 				System.out.println("Please, select the account where to receive money: ");
