@@ -6,9 +6,7 @@ Version: 0.2.0 (Prototype for submission)
 
 This project aims to fill a gap in the retail banking market by providing a terminal interface for bank account management.
 
-Contribute to the project: [NewBank] (https://github.com/KirylowE/NewBankGroup5).
-
-Dependencies:
+**Dependencies:**
 * Java 11 or later
 * mssql jdbc 8.2.2 or later.
 
@@ -32,11 +30,7 @@ Host: new-bank.database.windows.net
 Port: 1433
 Database: NewBank
 
-Known issues:
-The Azure database is not on a production tier, so may go into a sleep mode if not accessed for a period of time.  Connection attempts should rectify this, please try again.
-
-
-The program:
+**Running the program:**
 1. Run the application src\newbank\server\NewBankServer, it will listen for client connections.
 2. Run src\newbank\client\ExampleClient and it should connect.
 
@@ -53,3 +47,12 @@ The menu:
 10. SHOW LOANS (display currently outstanding loans for the logged in user)
 11. MODIFY CUSTOMER DETAILS    (amend personal details for logged in user)
 12. LOG OUT (log out current user - returns to login)
+
+**Known issues:**
+The Azure database is not on a production tier, so may go into a sleep mode if not accessed for a period of time.  Connection attempts should rectify this, please try again.
+
+Contribute to the project: [NewBank] (https://github.com/KirylowE/NewBankGroup5):
+* Please do not save credentials in plain text in new branches!
+
+Authors:
+Group 5
