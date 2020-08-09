@@ -124,7 +124,7 @@ public class NewBankClientHandler extends Thread {
 					out.println("Hello " + customer.getFirstName() + ". Please select option.\n");
 					this.mainMenu();
 					while (true) {
-						out.println("Main Menu. Please type an option (1 - 11) and hit the Enter key.");
+						out.println("Main Menu. Please type an option (1 - 12) and hit the Enter key.");
 						out.println("Type P or M to list all options.");
 						String request = in.readLine();
 						if (request.equals("M") || request.equals("P")) {
