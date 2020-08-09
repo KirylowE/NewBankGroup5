@@ -336,7 +336,7 @@ public class NewBankClientHandler extends Thread {
 				}
 
 					for(Lender l : this.bank.lenders) {
-						System.out.println(l.toString());
+						out.println(l.toString());
 					}
 					return "SUCCESS";
 
@@ -348,11 +348,11 @@ public class NewBankClientHandler extends Thread {
 				// MICROLOAN
 
 			try{
-				System.out.println("Please, select the lender: ");
+				out.println("Please, select the lender: ");
 				String lenderName=in.readLine();
-				System.out.println("Please, select the account where to receive money: ");
+				out.println("Please, select the account where to receive money: ");
 				String accountNameBorrower=in.readLine();
-				System.out.println("Please, indicate the amount to receive: ");
+				out.println("Please, indicate the amount to receive: ");
 				double amountToReceive=Double.parseDouble(in.readLine());
 				//System.out.print(lenders);
 				//return "true";
@@ -360,7 +360,7 @@ public class NewBankClientHandler extends Thread {
 					if(l.getCustomerID().equalsIgnoreCase(lenderName)){
 						if (l.getAmountLent() <= l.getAmountToLend() - amountToReceive) {
 							boolean transferResultToMicroLoan=this.bank.customer.pay(l.getAccountName(), amountToReceive);
-							System.out.println(transferResultToMicroLoan); // false
+							out.println(transferResultToMicroLoan); // false
 							if(transferResultToMicroLoan){
 								this.bank.customer.accounts.addingMoneyToBalance(accountNameBorrower, amountToReceive);
 								l.setAmountLent(amountToReceive);
